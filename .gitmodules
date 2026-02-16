@@ -1,0 +1,3 @@
+[submodule "gdUnit4"]
+	path = gdUnit4
+	url = https://github.com/godot-gdunit-labs/gdUnit4
