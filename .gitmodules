@@ -1,3 +1,6 @@
 [submodule "gdUnit4"]
 	path = gdUnit4
 	url = https://github.com/godot-gdunit-labs/gdUnit4
+[submodule "addons/gdUnit4"]
+	path = addons/gdUnit4
+	url = https://github.com/godot-gdunit-labs/gdUnit4
