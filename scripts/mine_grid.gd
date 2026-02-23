@@ -22,7 +22,7 @@ func _init(init_width: int, init_height: int, init_mines_count: int) -> void:
 	
 	_generate_grid()
 	_generate_mines()
-	_debug_print_grid()
+	#_debug_print_grid()
 
 func _generate_grid() -> void:
 	for outer_array in range(self.width):

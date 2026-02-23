@@ -20,8 +20,10 @@ func increase_mines() -> void:
 
 func set_as_mine() -> void:
 	self.mines = self.MINE
+
 func is_mine() -> bool:
 	return self.mines == self.MINE
+	
 func mined() -> bool:
 	return self.is_mined
 

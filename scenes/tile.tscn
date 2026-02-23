@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bdnoxe1w4e8j7"]
+
+[ext_resource type="Script" uid="uid://j6hgdc8jnjim" path="res://scripts/tile.gd" id="1_3dk36"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_uiyn6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uiyn6"]
+
+[node name="Tile" type="StaticBody3D" unique_id=1747647835]
+collision_layer = 3
+script = ExtResource("1_3dk36")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1959711744]
+mesh = SubResource("BoxMesh_uiyn6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2101654264]
+shape = SubResource("BoxShape3D_uiyn6")
+
+[node name="MineLabel" type="Label3D" parent="." unique_id=427115168]
+transform = Transform3D(0.16, 0, 0, 0, -6.993822e-09, 0.16, 0, -0.16, -6.993822e-09, 0, 0.51, 0)
+pixel_size = 0.025
+font_size = 256

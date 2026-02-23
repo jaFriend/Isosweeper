@@ -1,8 +1,34 @@
 [gd_scene format=3 uid="uid://e26n3osqq4gh"]
 
 [ext_resource type="Script" uid="uid://d1l6tnwfngyp6" path="res://scripts/level.gd" id="1_c40o3"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="2_3wf17"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_3wf17"]
+sky_material = SubResource("ProceduralSkyMaterial_c40o3")
+
+[sub_resource type="Environment" id="Environment_o52t6"]
+background_mode = 2
+sky = SubResource("Sky_3wf17")
+tonemap_mode = 2
+glow_enabled = true
 
 [node name="Placeholder" type="Node3D" unique_id=1223777596]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1800104595]
+environment = SubResource("Environment_o52t6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2033883832]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
 [node name="Level" type="Node" parent="." unique_id=1380531411]
 script = ExtResource("1_c40o3")
+
+[node name="ProtoController" parent="." unique_id=1334512796 instance=ExtResource("2_3wf17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4540521, 0.44144678, 1.889411)
+can_sprint = true
+can_freefly = true
