@@ -22,6 +22,8 @@ func get_tile_coordinates() -> Vector2i:
 	return grid_coords
 
 func set_mine_value(value :int) -> void:
-	var mine_label: Node = get_node("MineLabel")
-	mine_label.text = str(value)
-	mine_label.modulate = MINE_COLORS[value]
+	var adj_mines: Node = get_node("AdjacentMines")
+	adj_mines.mesh = adj_mines.mesh.duplicate()
+	adj_mines.mesh.text = str(value)
+	adj_mines.mesh.material = adj_mines.mesh.material.duplicate()
+	adj_mines.mesh.material.albedo_color = MINE_COLORS[value]
