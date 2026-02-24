@@ -35,6 +35,3 @@ func flagged() -> bool:
 
 func toggle_flagged() -> void:
 	self.is_flagged = !self.is_flagged
-
-func mine_cell() -> void:
-	self.is_revealed = true

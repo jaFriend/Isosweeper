@@ -91,14 +91,16 @@ func mine(pos: Vector2i) -> void:
 		var cell: Cell = _get_cell_in_bounds(cell_pos)
 		if not cell or cell.mined() or cell.flagged():
 			continue
-
-		if cell.mines == 0:
-			for adjacent_index in ADJACENT_INDEXES:
-				var adj_cell: Cell = _get_cell_in_bounds(cell_pos + adjacent_index)
-				if adj_cell and not adj_cell.is_mine():
-					cell_queue.push_back(cell_pos + adjacent_index)
+			
 		cell.mine()
 		if self.late_generation:
 			self.late_generation = false
 			_generate_mines()
+
+		if cell.mines == 0:
+			for adjacent_index in ADJACENT_INDEXES:
+				var adj_cell: Cell = _get_cell_in_bounds(cell_pos + adjacent_index)
+				if adj_cell and not adj_cell.is_mine() and not adj_cell.is_revealed:
+					cell_queue.push_back(cell_pos + adjacent_index)
+
 		reveal_cell.emit(cell_pos)

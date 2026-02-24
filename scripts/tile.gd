@@ -33,14 +33,6 @@ func set_mine_value(value :int) -> void:
 	if value == 9:
 		return
 	self.adj_mines_value = value
-	return
-	#var adj_mines: Node = get_node("AdjacentMines" + str(value))
-	#adj_mines.mesh = adj_mines.mesh.duplicate()
-	#adj_mines.mesh.text = str(value)
-	#self.adj_mines_value = value
-	#adj_mines.mesh.material = adj_mines.mesh.material.duplicate()
-	#adj_mines.mesh.material.albedo_color = MINE_COLORS[value]
-	#adj_mines.visible = false
 
 func _update_visual() -> void:
 	match state:
@@ -52,7 +44,9 @@ func _update_visual() -> void:
 			if self.adj_mines_value == 0:
 				return
 			
-			var adj_mines: Node = get_node("AdjacentMines" + str(self.adj_mines_value))
+			var adj_mines: Node = get_node("AdjacentMines")
+			adj_mines.text = str(self.adj_mines_value)
+			adj_mines.modulate = MINE_COLORS[self.adj_mines_value]
 			adj_mines.visible = true
 
 func _reveal() -> void:

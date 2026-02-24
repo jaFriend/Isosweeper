@@ -1,7 +1,7 @@
 extends Node
 
-@export var width: int = 15
-@export var height: int = 15
+@export var width: int = 16
+@export var height: int = 12
 @export var mines: int = 20
 @export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
 var grid_level: Grid
@@ -24,6 +24,7 @@ func _ready() -> void:
 	print("Execution Time: %d μs (%.3f ms)" % [total_time_usec, total_time_msec])
 	tiles_map = {}
 	_generate_3d_grid()
+	
 	print("Generated grid")
 	
 	GameEvents.player_send_vector2i.connect(_mine_grid)
@@ -60,4 +61,6 @@ func _reveal_cell(pos: Vector2i):
 	tiles_map[pos]._reveal()
 	
 	if cells_shown == cells_left:
+		#var victory_label: Node = get_node("../Victory")
+		#victory_label.visible = true
 		print("Victory")
