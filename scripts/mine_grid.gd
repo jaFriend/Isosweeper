@@ -5,6 +5,9 @@ var height: int
 var mines_count: int
 var grid: Array[Array]
 var rng: RandomNumberGenerator
+var late_generation: bool
+
+signal reveal_cell(pos: Vector2i)
 
 const ADJACENT_INDEXES: Array[Vector2i] = [
 	Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1),
@@ -12,25 +15,28 @@ const ADJACENT_INDEXES: Array[Vector2i] = [
 	Vector2i(-1,  1), Vector2i(0,  1), Vector2i(1,  1)
 ]
 
-func _init(init_width: int, init_height: int, init_mines_count: int) -> void:
+func _init(init_width: int, init_height: int, init_mines_count: int, pre_generate: bool) -> void:
 	self.width = init_width
 	self.height = init_height
 	self.mines_count = init_mines_count
 	self.grid = []
 	self.rng = RandomNumberGenerator.new()
 	self.rng.randomize()
+	self.late_generation = true
 	
 	_generate_grid()
-	_generate_mines()
+	
+	if pre_generate:
+		self.late_generation = false
+		_generate_mines()
 	#_debug_print_grid()
 
 func _generate_grid() -> void:
 	for outer_array in range(self.width):
 		var column: Array[Cell] = []
-		
 		for inner_array in range(self.height):
 			column.append(Cell.new())
-		
+
 		grid.append(column)
 
 func _cell_in_bounds(pos: Vector2i) -> bool:
@@ -50,10 +56,10 @@ func _generate_mines() -> void:
 		var index: Vector2i = Vector2i(rng.randi_range(0, self.width - 1), 
 									   rng.randi_range(0, self.height - 1))
 		var cell: Cell = _get_cell(index)
-		if cell.is_mine():
+		if cell.is_mine() or cell.is_revealed:
 			continue
 		cell.set_as_mine()
-		
+
 		for adjacent_index in ADJACENT_INDEXES:
 			var adj_cell: Cell = _get_cell_in_bounds(index + adjacent_index)
 			if adj_cell and !adj_cell.is_mine():
@@ -78,22 +84,21 @@ func mine(pos: Vector2i) -> void:
 	if first_cell.is_mine():
 		print("add game over")
 		return
-	
+
 	var cell_queue: Array[Vector2i] = [pos]
-	
 	while !cell_queue.is_empty():
 		var cell_pos: Vector2i = cell_queue.pop_front()
 		var cell: Cell = _get_cell_in_bounds(cell_pos)
 		if not cell or cell.mined() or cell.flagged():
 			continue
 
-
 		if cell.mines == 0:
 			for adjacent_index in ADJACENT_INDEXES:
 				var adj_cell: Cell = _get_cell_in_bounds(cell_pos + adjacent_index)
 				if adj_cell and not adj_cell.is_mine():
 					cell_queue.push_back(cell_pos + adjacent_index)
-
 		cell.mine()
-					
-				
+		if self.late_generation:
+			self.late_generation = false
+			_generate_mines()
+		reveal_cell.emit(cell_pos)

@@ -2,15 +2,82 @@
 
 [ext_resource type="Script" uid="uid://j6hgdc8jnjim" path="res://scripts/tile.gd" id="1_3dk36"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3iir"]
+albedo_color = Color(0.735357, 0.735357, 0.735357, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_uiyn6"]
+material = SubResource("StandardMaterial3D_j3iir")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j8k5k"]
+albedo_color = Color(0.58383155, 0.58383155, 0.58383155, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w8vld"]
+material = SubResource("StandardMaterial3D_j8k5k")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uiyn6"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3dk36"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ywnoi"]
+albedo_color = Color(0, 0, 1, 1)
 
 [sub_resource type="TextMesh" id="TextMesh_3dk36"]
+material = SubResource("StandardMaterial3D_ywnoi")
+text = "1"
+font_size = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jy7pm"]
+albedo_color = Color(0, 0.735357, 0, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_ywnoi"]
+material = SubResource("StandardMaterial3D_jy7pm")
+text = "2"
+font_size = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q7utx"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_jy7pm"]
+material = SubResource("StandardMaterial3D_q7utx")
+text = "3"
+font_size = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6p3j2"]
+albedo_color = Color(0, 0, 0.735357, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_q7utx"]
+material = SubResource("StandardMaterial3D_6p3j2")
+text = "4"
+font_size = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gtpg2"]
+albedo_color = Color(0.735357, 0, 0, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_6p3j2"]
+material = SubResource("StandardMaterial3D_gtpg2")
+text = "5"
+font_size = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a2bny"]
+albedo_color = Color(0, 0.735357, 0.735357, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_gtpg2"]
+material = SubResource("StandardMaterial3D_a2bny")
+text = "6"
+font_size = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_284l3"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_a2bny"]
+material = SubResource("StandardMaterial3D_284l3")
+text = "7"
+font_size = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3dk36"]
+albedo_color = Color(0.735357, 0.735357, 0.735357, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_284l3"]
 material = SubResource("StandardMaterial3D_3dk36")
-text = "T"
+text = "8"
 font_size = 96
 
 [node name="Tile" type="StaticBody3D" unique_id=1747647835]
@@ -20,9 +87,49 @@ script = ExtResource("1_3dk36")
 [node name="Block" type="MeshInstance3D" parent="." unique_id=1959711744]
 mesh = SubResource("BoxMesh_uiyn6")
 
+[node name="Block_revealed" type="MeshInstance3D" parent="." unique_id=836441178]
+visible = false
+mesh = SubResource("BoxMesh_w8vld")
+
 [node name="Block_col" type="CollisionShape3D" parent="." unique_id=2101654264]
 shape = SubResource("BoxShape3D_uiyn6")
 
-[node name="AdjacentMines" type="MeshInstance3D" parent="." unique_id=1841773777]
+[node name="AdjacentMines1" type="MeshInstance3D" parent="." unique_id=1841773777]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
 mesh = SubResource("TextMesh_3dk36")
+
+[node name="AdjacentMines2" type="MeshInstance3D" parent="." unique_id=595566817]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
+mesh = SubResource("TextMesh_ywnoi")
+
+[node name="AdjacentMines3" type="MeshInstance3D" parent="." unique_id=761278895]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
+mesh = SubResource("TextMesh_jy7pm")
+
+[node name="AdjacentMines4" type="MeshInstance3D" parent="." unique_id=1581957422]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
+mesh = SubResource("TextMesh_q7utx")
+
+[node name="AdjacentMines5" type="MeshInstance3D" parent="." unique_id=190853737]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
+mesh = SubResource("TextMesh_6p3j2")
+
+[node name="AdjacentMines6" type="MeshInstance3D" parent="." unique_id=1377852570]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
+mesh = SubResource("TextMesh_gtpg2")
+
+[node name="AdjacentMines7" type="MeshInstance3D" parent="." unique_id=1290632840]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
+mesh = SubResource("TextMesh_a2bny")
+
+[node name="AdjacentMines8" type="MeshInstance3D" parent="." unique_id=1241402832]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5124022, 0)
+visible = false
+mesh = SubResource("TextMesh_284l3")
