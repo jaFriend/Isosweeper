@@ -1,15 +1,15 @@
 extends Node
 
-@export var width: int = 16
-@export var height: int = 12
-@export var mines: int = 20
+@export var width: int = 4
+@export var height: int = 4
+@export var mines: int = 1
 @export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
 var grid_level: Grid
 var tiles_map: Dictionary
 
 var cells_shown: int
 var cells_left: int
-
+var mines_left: int
 
 func _ready() -> void:
 	var start_time: int = Time.get_ticks_usec()
@@ -27,11 +27,20 @@ func _ready() -> void:
 	
 	print("Generated grid")
 	
-	GameEvents.player_send_vector2i.connect(_mine_grid)
+	GameEvents.player_send_mine_signal.connect(_mine_grid)
+	GameEvents.player_send_flag_signal.connect(_flag_grid)
 	grid_level.reveal_cell.connect(_reveal_cell)
+	grid_level.flag_cell.connect(_flag_cell)
 
 	cells_shown = 0
 	cells_left = width * height - mines
+	mines_left = mines
+	var mines_label = get_node("../LevelUI/Mines")
+	var mines_left_label = get_node("../LevelUI/MinesLeft")
+	var tiles_left_label = get_node("../LevelUI/TilesLeft")
+	tiles_left_label.text = str(cells_left)
+	mines_label.text = str(mines)
+	mines_left_label.text = str(mines_left)
 
 	print("cells_left: %d" % [cells_left])
 
@@ -52,6 +61,21 @@ func _generate_3d_grid() -> void:
 
 func _mine_grid(pos: Vector2i):
 	grid_level.mine(pos)
+	
+func _flag_grid(pos: Vector2i):
+	grid_level.flag(pos)
+
+func _flag_cell(pos: Vector2i, flag: bool):
+	var tiles_left_label = get_node("../LevelUI/MinesLeft")
+	if flag:
+		mines_left -= 1
+		if mines_left >= 0:
+			tiles_left_label.text = str(mines_left)
+	else:
+		mines_left += 1
+		if mines_left >= 0:
+			tiles_left_label.text = str(mines_left)
+	tiles_map[pos]._flag(flag)
 
 func _reveal_cell(pos: Vector2i):
 	cells_shown += 1
@@ -59,8 +83,12 @@ func _reveal_cell(pos: Vector2i):
 	var adj_mine_value: Cell = grid_level._get_cell(pos)
 	tiles_map[pos].set_mine_value(grid_level.grid[pos.x][pos.y].mines)
 	tiles_map[pos]._reveal()
+
+	var tiles_left_label = get_node("../LevelUI/TilesLeft")
+	tiles_left_label.text = str(cells_left - cells_shown)
 	
 	if cells_shown == cells_left:
-		#var victory_label: Node = get_node("../Victory")
-		#victory_label.visible = true
+		var victory_label: Node = get_node("../Victory")
+		victory_label.visible = true
+
 		print("Victory")

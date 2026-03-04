@@ -14,6 +14,9 @@ albedo_color = Color(0.58383155, 0.58383155, 0.58383155, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_w8vld"]
 material = SubResource("StandardMaterial3D_j8k5k")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3dk36"]
+albedo_color = Color(0.9063318, 0.58383155, 0.58383155, 1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_uiyn6"]
 
 [node name="Tile" type="StaticBody3D" unique_id=1747647835]
@@ -27,12 +30,17 @@ mesh = SubResource("BoxMesh_uiyn6")
 visible = false
 mesh = SubResource("BoxMesh_w8vld")
 
+[node name="Block_flagged" type="MeshInstance3D" parent="." unique_id=169742832]
+visible = false
+mesh = SubResource("BoxMesh_w8vld")
+surface_material_override/0 = SubResource("StandardMaterial3D_3dk36")
+
 [node name="Block_col" type="CollisionShape3D" parent="." unique_id=2101654264]
 shape = SubResource("BoxShape3D_uiyn6")
 
 [node name="AdjacentMines" type="Label3D" parent="." unique_id=1532298724]
-transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, 0.2, 0, -0.2, -8.742278e-09, 0, 0.5012755, 0)
+transform = Transform3D(0.8, 0, 0, 0, -3.4969112e-08, 0.8, 0, -0.8, -3.4969112e-08, 0, 0.5012755, 0)
 visible = false
-text = "T"
-font_size = 1024
-outline_size = 32
+text = "X"
+font_size = 256
+outline_size = 16

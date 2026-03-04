@@ -16,6 +16,19 @@ sky = SubResource("Sky_3wf17")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="LabelSettings" id="LabelSettings_3wf17"]
+font_size = 192
+font_color = Color(0, 0.735357, 0, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3wf17"]
+border_width_bottom = 3
+border_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o52t6"]
+bg_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+
 [node name="Placeholder" type="Node3D" unique_id=1223777596]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1800104595]
@@ -32,3 +45,110 @@ script = ExtResource("1_c40o3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4540521, 0.44144678, 1.889411)
 can_sprint = true
 can_freefly = true
+
+[node name="Victory" type="Label" parent="." unique_id=12295941]
+visible = false
+offset_left = 142.0
+offset_top = 154.0
+offset_right = 1005.0
+offset_bottom = 503.0
+text = "VICTORY"
+label_settings = SubResource("LabelSettings_3wf17")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelUI" type="Control" parent="." unique_id=521962278]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Bar" type="Panel" parent="LevelUI" unique_id=768885581]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 1132.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3wf17")
+
+[node name="BarSide" type="Panel" parent="LevelUI" unique_id=452204048]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 77.0
+offset_right = 82.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o52t6")
+
+[node name="BarSide2" type="Panel" parent="LevelUI" unique_id=574919975]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 211.0
+offset_right = 216.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o52t6")
+
+[node name="Mines_text" type="Label" parent="LevelUI" unique_id=1229051996]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 6.0
+offset_right = 66.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+text = "MINES:"
+
+[node name="Mines" type="Label" parent="LevelUI" unique_id=1439774779]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 6.0
+offset_right = 94.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+text = "000"
+horizontal_alignment = 1
+
+[node name="MinesLeft_text" type="Label" parent="LevelUI" unique_id=2098212806]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 6.0
+offset_right = 199.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+text = "MINES LEFT:"
+
+[node name="MinesLeft" type="Label" parent="LevelUI" unique_id=1418452615]
+layout_mode = 0
+offset_left = 201.0
+offset_top = 6.0
+offset_right = 229.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+text = "000"
+horizontal_alignment = 1
+
+[node name="TilesLeft_text" type="Label" parent="LevelUI" unique_id=2052262330]
+layout_mode = 0
+offset_left = 241.0
+offset_top = 6.0
+offset_right = 327.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+text = "TILES LEFT:"
+
+[node name="TilesLeft" type="Label" parent="LevelUI" unique_id=1412899579]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 6.0
+offset_right = 356.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+text = "000"
+horizontal_alignment = 1

@@ -47,6 +47,7 @@ var selected_coord: Vector2i
 @export var input_freefly : String = "movement_freefly"
 
 @export var input_click : String = "input_selection"
+@export var input_second_click : String = "input_second_selection"
 
 var mouse_captured : bool = false
 var look_rotation : Vector2
@@ -130,7 +131,9 @@ func _physics_process(delta: float) -> void:
 			
 			selected_coord = coords
 			if Input.is_action_just_pressed(input_click):
-				GameEvents.player_send_vector2i.emit(coords)
+				GameEvents.player_send_mine_signal.emit(coords)
+			if Input.is_action_just_pressed(input_second_click):
+				GameEvents.player_send_flag_signal.emit(coords)
 			#print("Looking at Tile: ", coords)
 
 

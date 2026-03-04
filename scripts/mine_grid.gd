@@ -8,6 +8,7 @@ var rng: RandomNumberGenerator
 var late_generation: bool
 
 signal reveal_cell(pos: Vector2i)
+signal flag_cell(pos: Vector2i, flag: bool)
 
 const ADJACENT_INDEXES: Array[Vector2i] = [
 	Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1),
@@ -76,6 +77,13 @@ func _debug_print_grid() -> void:
 			else:
 				line += str(cell_value) + " "
 		print(line)
+
+func flag(pos: Vector2i) -> void:
+	var cell: Cell = _get_cell_in_bounds(pos)
+	if not cell or cell.mined():
+		return
+	cell.toggle_flagged()
+	flag_cell.emit(pos, cell.flagged())
 
 func mine(pos: Vector2i) -> void:
 	var first_cell: Cell = _get_cell_in_bounds(pos)
