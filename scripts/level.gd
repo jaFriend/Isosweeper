@@ -1,8 +1,8 @@
 extends Node
 
-@export var width: int = 4
-@export var height: int = 4
-@export var mines: int = 1
+@export var width: int = 16
+@export var height: int = 16
+@export var mines: int = 40
 @export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
 var grid_level: Grid
 var tiles_map: Dictionary
