@@ -18,8 +18,6 @@ func _ready() -> void:
 		return
 	
 
-
-
 func open_levels() -> bool:
 	var filename: String = "res://levels.dat"
 	var file: FileAccess = FileAccess.open(filename, FileAccess.READ)

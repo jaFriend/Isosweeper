@@ -174,6 +174,7 @@ func _mouse_captured_state(captured: bool) -> void:
 		mouse_captured = false
 		velocity.x = 0
 		velocity.y = 0
+		velocity.z = 0
 
 
 ## Checks if some Input Actions haven't been created.
