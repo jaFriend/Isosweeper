@@ -62,14 +62,19 @@ func _ready() -> void:
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
+	GameEvents.is_mouse_captured.connect(_mouse_captured_state)
+	_mouse_captured_state(true)
+
 	selected_coord = Vector2i(-1,-1)
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
+	"""
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
+	"""
 	
 	# Look around
 	if mouse_captured and event is InputEventMouseMotion:
@@ -108,7 +113,7 @@ func _physics_process(delta: float) -> void:
 		move_speed = base_speed
 
 	# Apply desired movement to velocity
-	if can_move:
+	if can_move and mouse_captured:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if move_dir:
@@ -160,15 +165,15 @@ func disable_freefly():
 	collider.disabled = false
 	freeflying = false
 
-
-func capture_mouse():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	mouse_captured = true
-
-
-func release_mouse():
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	mouse_captured = false
+func _mouse_captured_state(captured: bool) -> void:
+	if captured:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		mouse_captured = true
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		mouse_captured = false
+		velocity.x = 0
+		velocity.y = 0
 
 
 ## Checks if some Input Actions haven't been created.

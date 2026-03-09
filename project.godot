@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="IsoSweeper"
-run/main_scene="uid://e26n3osqq4gh"
+run/main_scene="uid://cst8th2nv3fxa"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameEvents="*uid://beu8ecoywc04h"
+LevelManager="*uid://cmxwvvfqa78t1"
 
 [editor_plugins]
 

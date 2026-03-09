@@ -1,8 +1,9 @@
 extends Node
 
-@export var width: int = 16
-@export var height: int = 16
-@export var mines: int = 40
+var width: int = 4
+var height: int = 4
+var mines: int = 1
+var pre_generate: bool = false
 @export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
 var grid_level: Grid
 var tiles_map: Dictionary
@@ -11,10 +12,17 @@ var cells_shown: int
 var cells_left: int
 var mines_left: int
 
+func load_level() -> void:
+	if LevelManager.level:
+		self.width = LevelManager.level.x
+		self.height = LevelManager.level.y
+		self.mines = LevelManager.level.mines
+		self.pre_generate = LevelManager.level.pre_generate
+
 func _ready() -> void:
+	load_level()
 	var start_time: int = Time.get_ticks_usec()
-	#var level: Grid = Grid.new(30, 16, 99)
-	var pre_generate: bool = false
+
 	grid_level = Grid.new(width, height, mines, pre_generate)
 	var end_time: int = Time.get_ticks_usec()
 	var total_time_usec: int = end_time - start_time
@@ -88,7 +96,9 @@ func _reveal_cell(pos: Vector2i):
 	tiles_left_label.text = str(cells_left - cells_shown)
 	
 	if cells_shown == cells_left:
+		GameEvents.is_mouse_captured.emit(false)
 		var victory_label: Node = get_node("../Victory")
 		victory_label.visible = true
-
-		print("Victory")
+		
+		await get_tree().create_timer(2.0).timeout
+		get_tree().change_scene_to_file("res://scenes/level_menu.tscn")

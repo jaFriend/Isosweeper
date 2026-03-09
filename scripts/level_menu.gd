@@ -50,4 +50,5 @@ func render_levels(unlocked_levels: int) -> bool:
 	return true
 
 func _load_level(idx: int):
-	print(idx)
+	LevelManager.level = levels[idx]
+	get_tree().change_scene_to_file("res://scenes/level.tscn")

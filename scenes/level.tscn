@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://e26n3osqq4gh"]
 
-[ext_resource type="Script" uid="uid://d1l6tnwfngyp6" path="res://scripts/level.gd" id="1_c40o3"]
-[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="2_3wf17"]
+[ext_resource type="Script" uid="uid://d1l6tnwfngyp6" path="res://scripts/level.gd" id="1_w7c3h"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="2_w8frs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -29,7 +29,7 @@ border_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o52t6"]
 bg_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
 
-[node name="Placeholder" type="Node3D" unique_id=1223777596]
+[node name="LevelWorld" type="Node3D" unique_id=1223777596]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1800104595]
 environment = SubResource("Environment_o52t6")
@@ -39,9 +39,9 @@ transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545
 shadow_enabled = true
 
 [node name="Level" type="Node" parent="." unique_id=1380531411]
-script = ExtResource("1_c40o3")
+script = ExtResource("1_w7c3h")
 
-[node name="ProtoController" parent="." unique_id=1334512796 instance=ExtResource("2_3wf17")]
+[node name="ProtoController" parent="." unique_id=1334512796 instance=ExtResource("2_w8frs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4540521, 0.44144678, 1.889411)
 can_sprint = true
 can_freefly = true
