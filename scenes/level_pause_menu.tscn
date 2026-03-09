@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cygjdgyxfrwka"]
+
+[ext_resource type="Script" uid="uid://dqwuibas3u7jy" path="res://scripts/level_pause_menu.gd" id="1_g3l6g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gjniw"]
+bg_color = Color(0.2509804, 0.31764707, 0.23137255, 1)
+
+[node name="LevelPauseMenu" type="Control" unique_id=1526420097]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g3l6g")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=887457100]
+custom_minimum_size = Vector2(250, 125)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gjniw")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1846624408]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=142398331]
+layout_mode = 2
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=776789490]
+layout_mode = 2
+text = "Resume Game"
+
+[node name="ExitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1605773739]
+layout_mode = 2
+text = "Exit to Menu"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

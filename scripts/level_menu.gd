@@ -10,8 +10,14 @@ func _ready() -> void:
 	status = open_levels()
 	if not status:
 		return
-	
-	var unlocked_levels: int = 10
+		
+	var unlocked_levels: int = 1
+	if LevelManager.level_completed and LevelManager.idx == LevelManager.completed_levels:
+		LevelManager.level_completed = false
+		LevelManager.completed_levels += 1
+
+	if LevelManager.completed_levels:
+		unlocked_levels += LevelManager.completed_levels
 	status = render_levels(unlocked_levels)
 	
 	if not status:
@@ -49,4 +55,6 @@ func render_levels(unlocked_levels: int) -> bool:
 
 func _load_level(idx: int):
 	LevelManager.level = levels[idx]
+	LevelManager.idx = idx
+	LevelManager.level_completed = false
 	get_tree().change_scene_to_file("res://scenes/level.tscn")

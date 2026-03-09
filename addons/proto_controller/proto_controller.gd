@@ -131,7 +131,7 @@ func _physics_process(delta: float) -> void:
 	var ray = $Head/Camera3D/RayCast3D
 	if ray.is_colliding():
 		var ray_collider = ray.get_collider()
-		if ray_collider.has_method("get_tile_coordinates"):
+		if ray_collider.has_method("get_tile_coordinates") and mouse_captured:
 			var coords: Vector2i = ray_collider.get_tile_coordinates()
 			
 			selected_coord = coords

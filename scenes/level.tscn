@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d1l6tnwfngyp6" path="res://scripts/level.gd" id="1_w7c3h"]
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="2_w8frs"]
+[ext_resource type="PackedScene" uid="uid://cygjdgyxfrwka" path="res://scenes/level_pause_menu.tscn" id="3_w8frs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -15,6 +16,12 @@ background_mode = 2
 sky = SubResource("Sky_3wf17")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_w8frs"]
+font_size = 192
+font_color = Color(1, 0, 0, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3wf17"]
 font_size = 192
@@ -46,12 +53,37 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4540521, 0.44144678, 1.8894
 can_sprint = true
 can_freefly = true
 
+[node name="Defeat" type="Label" parent="." unique_id=1041158382]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -431.5
+offset_top = -174.5
+offset_right = 431.5
+offset_bottom = 174.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "DEFEAT"
+label_settings = SubResource("LabelSettings_w8frs")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Victory" type="Label" parent="." unique_id=12295941]
 visible = false
-offset_left = 142.0
-offset_top = 154.0
-offset_right = 1005.0
-offset_bottom = 503.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -431.5
+offset_top = -174.5
+offset_right = 431.5
+offset_bottom = 174.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "VICTORY"
 label_settings = SubResource("LabelSettings_3wf17")
 horizontal_alignment = 1
@@ -152,3 +184,6 @@ offset_bottom = 29.0
 theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
 text = "000"
 horizontal_alignment = 1
+
+[node name="LevelPauseMenu" parent="." unique_id=1526420097 instance=ExtResource("3_w8frs")]
+visible = false

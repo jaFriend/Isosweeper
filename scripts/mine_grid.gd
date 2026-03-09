@@ -9,6 +9,7 @@ var late_generation: bool
 
 signal reveal_cell(pos: Vector2i)
 signal flag_cell(pos: Vector2i, flag: bool)
+signal game_over
 
 const ADJACENT_INDEXES: Array[Vector2i] = [
 	Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1),
@@ -90,7 +91,7 @@ func mine(pos: Vector2i) -> void:
 	if not first_cell or first_cell.flagged() or first_cell.mined():
 		return
 	if first_cell.is_mine():
-		print("add game over")
+		game_over.emit()
 		return
 
 	var cell_queue: Array[Vector2i] = [pos]

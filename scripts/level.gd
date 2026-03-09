@@ -1,5 +1,12 @@
 extends Node
 
+
+@onready var level_pause_menu = get_node("../LevelPauseMenu")
+var pause_menu_state: bool = false:
+	set(value):
+		pause_menu_state = value
+		_update_pause_menu_state()
+
 var width: int = 4
 var height: int = 4
 var mines: int = 1
@@ -21,6 +28,7 @@ func load_level() -> void:
 
 func _ready() -> void:
 	load_level()
+
 	var start_time: int = Time.get_ticks_usec()
 
 	grid_level = Grid.new(width, height, mines, pre_generate)
@@ -39,6 +47,9 @@ func _ready() -> void:
 	GameEvents.player_send_flag_signal.connect(_flag_grid)
 	grid_level.reveal_cell.connect(_reveal_cell)
 	grid_level.flag_cell.connect(_flag_cell)
+	grid_level.game_over.connect(_on_defeat)
+	level_pause_menu.resume_pressed.connect(_resume_game)
+	level_pause_menu.exit_pressed.connect(_exit_game)
 
 	cells_shown = 0
 	cells_left = width * height - mines
@@ -51,7 +62,6 @@ func _ready() -> void:
 	mines_left_label.text = str(mines_left)
 
 	print("cells_left: %d" % [cells_left])
-
 
 func _generate_3d_grid() -> void:
 	for x in range(width):
@@ -101,4 +111,30 @@ func _reveal_cell(pos: Vector2i):
 		victory_label.visible = true
 		
 		await get_tree().create_timer(2.0).timeout
-		get_tree().change_scene_to_file("res://scenes/level_menu.tscn")
+		LevelManager.level_completed = true
+		_exit_game()
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("pause_button"):
+		pause_menu_state = not pause_menu_state
+
+func _on_defeat() -> void:
+	GameEvents.is_mouse_captured.emit(false)
+	var defeat_label: Node = get_node("../Defeat")
+	defeat_label.visible = true
+	await get_tree().create_timer(2.0).timeout
+	_exit_game()
+
+func _exit_game() -> void:
+	get_tree().change_scene_to_file("res://scenes/level_menu.tscn")
+
+func _resume_game() -> void:
+	pause_menu_state = false
+
+func _update_pause_menu_state() -> void:
+	if pause_menu_state:
+		GameEvents.is_mouse_captured.emit(false)
+		level_pause_menu.visible = true
+	else:
+		GameEvents.is_mouse_captured.emit(true)
+		level_pause_menu.visible = false
