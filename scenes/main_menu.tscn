@@ -75,4 +75,5 @@ theme_override_font_sizes/font_size = 24
 text = "Exit Game"
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/LevelsButton" to="." method="_on_levels_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/CustomLevelButton" to="." method="_on_custom_level_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

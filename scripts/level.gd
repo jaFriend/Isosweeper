@@ -20,12 +20,11 @@ var cells_left: int
 var mines_left: int
 
 func load_level() -> void:
-	if LevelManager.idx != -1:
-		var level_info: LevelInfo = LevelManager.get_level()
-		self.width = level_info.x
-		self.height = level_info.y
-		self.mines = level_info.mines
-		self.pre_generate = level_info.pre_generate
+	var level_info: LevelInfo = LevelManager.get_level()
+	self.width = level_info.x
+	self.height = level_info.y
+	self.mines = level_info.mines
+	self.pre_generate = level_info.pre_generate
 
 func _ready() -> void:
 	load_level()
@@ -128,7 +127,10 @@ func _on_defeat() -> void:
 	_exit_game()
 
 func _exit_game() -> void:
-	SceneManager.transition("res://scenes/level_menu.tscn")
+	if LevelManager.idx == -1:
+		SceneManager.transition("res://scenes/custom_level.tscn")
+	else:
+		SceneManager.transition("res://scenes/level_menu.tscn")
 
 func _resume_game() -> void:
 	pause_menu_state = false

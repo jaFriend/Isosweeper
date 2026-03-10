@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://bhh4i1u3rfj1w"]
+
+[ext_resource type="Script" uid="uid://cngd175eg17ck" path="res://scripts/custom_level.gd" id="1_w1nej"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r2waq"]
+bg_color = Color(0.2509804, 0.31764707, 0.23137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1nej"]
+bg_color = Color(0.38431373, 0.5058824, 0.25490198, 1)
+
+[node name="CustomLevel" type="Control" unique_id=734283217]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w1nej")
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1092009899]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r2waq")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=621367800]
+custom_minimum_size = Vector2(400, 155)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -62.5
+offset_right = 125.0
+offset_bottom = 62.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w1nej")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1451934803]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1659946928]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1637258268]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=513942772]
+layout_mode = 2
+text = "Grid X:"
+
+[node name="GridXLine" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1355326336]
+layout_mode = 2
+placeholder_text = "10"
+
+[node name="Label2" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=812131794]
+layout_mode = 2
+text = "Grid Y:"
+
+[node name="GridYLine" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1829794817]
+layout_mode = 2
+placeholder_text = "10"
+
+[node name="Label3" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1448677721]
+layout_mode = 2
+text = "Mines: "
+
+[node name="MinesLine" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=46603695]
+layout_mode = 2
+placeholder_text = "20"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1801683785]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=938153606]
+layout_mode = 2
+text = "Pre-Generate Mines:"
+
+[node name="PreGenerateCheck" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=350688651]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2033298943]
+layout_mode = 2
+text = "Play Level"
+
+[node name="InvalidInput" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1132355077]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8288101, 2.7193873e-06, 5.7756904e-07, 1)
+text = "Invalid Input Detected! Change to correct values."
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=15066439]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 35
+
+[node name="BackButton" type="Button" parent="MarginContainer" unique_id=1820465147]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/BackButton" to="." method="_on_back_button_pressed"]
