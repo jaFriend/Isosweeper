@@ -20,11 +20,12 @@ var cells_left: int
 var mines_left: int
 
 func load_level() -> void:
-	if LevelManager.level:
-		self.width = LevelManager.level.x
-		self.height = LevelManager.level.y
-		self.mines = LevelManager.level.mines
-		self.pre_generate = LevelManager.level.pre_generate
+	if LevelManager.idx != -1:
+		var level_info: LevelInfo = LevelManager.get_level()
+		self.width = level_info.x
+		self.height = level_info.y
+		self.mines = level_info.mines
+		self.pre_generate = level_info.pre_generate
 
 func _ready() -> void:
 	load_level()
@@ -106,12 +107,12 @@ func _reveal_cell(pos: Vector2i):
 	tiles_left_label.text = str(cells_left - cells_shown)
 	
 	if cells_shown == cells_left:
+		LevelManager.win()
 		GameEvents.is_mouse_captured.emit(false)
 		var victory_label: Node = get_node("../Victory")
 		victory_label.visible = true
 		
 		await get_tree().create_timer(2.0).timeout
-		LevelManager.level_completed = true
 		_exit_game()
 
 func _process(delta: float) -> void:
@@ -119,6 +120,7 @@ func _process(delta: float) -> void:
 		pause_menu_state = not pause_menu_state
 
 func _on_defeat() -> void:
+	LevelManager.lose()
 	GameEvents.is_mouse_captured.emit(false)
 	var defeat_label: Node = get_node("../Defeat")
 	defeat_label.visible = true
@@ -126,7 +128,7 @@ func _on_defeat() -> void:
 	_exit_game()
 
 func _exit_game() -> void:
-	get_tree().change_scene_to_file("res://scenes/level_menu.tscn")
+	SceneManager.transition("res://scenes/level_menu.tscn")
 
 func _resume_game() -> void:
 	pause_menu_state = false

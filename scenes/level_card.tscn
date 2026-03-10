@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://crmf5784t1sbb" path="res://scripts/level_card.gd" id="1_dw25j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dw25j"]
-bg_color = Color(0.2509804, 0.31764707, 0.23137255, 1)
+bg_color = Color(0.42352942, 0.6509804, 0.31764707, 1)
 
 [node name="LevelCard" type="PanelContainer" unique_id=1420080784]
 custom_minimum_size = Vector2(350, 150)
@@ -34,9 +34,16 @@ text = "Level: 1000"
 layout_mode = 2
 text = "Grid: 1000x1000"
 
-[node name="Safety" type="Label" parent="MarginContainer/VBoxContainer" unique_id=898677179]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=269333495]
+layout_mode = 2
+
+[node name="Safety" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=898677179]
 layout_mode = 2
 text = "Safety: Yes"
+
+[node name="Mines" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=349518964]
+layout_mode = 2
+text = "Mines: 1000"
 
 [node name="BestTime" type="Label" parent="MarginContainer/VBoxContainer" unique_id=90803519]
 visible = false

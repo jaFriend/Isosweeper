@@ -2,7 +2,8 @@ extends PanelContainer
 
 @onready var level_label: Label = $MarginContainer/VBoxContainer/HBoxContainer/Level
 @onready var grid_label: Label = $MarginContainer/VBoxContainer/HBoxContainer/Grid
-@onready var safety_label: Label = $MarginContainer/VBoxContainer/Safety
+@onready var safety_label: Label = $MarginContainer/VBoxContainer/HBoxContainer2/Safety
+@onready var mines_label: Label = $MarginContainer/VBoxContainer/HBoxContainer2/Mines
 @onready var play_button: Button = $MarginContainer/VBoxContainer/Button
 var index: int = 0
 signal selected(idx: int)
@@ -18,6 +19,8 @@ func setup(level: int, level_info: LevelInfo):
 	else:
 		safety_string += "Nay"
 	safety_label.text = safety_string
+	
+	mines_label.text = "Mines: %d" % [level_info.mines]
 
 func _unlock() -> void:
 	play_button.disabled = false

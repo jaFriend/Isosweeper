@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://k4imlmqknpci" path="res://scripts/level_menu.gd" id="1_yl4fo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rj3wb"]
-bg_color = Color(0.42352942, 0.6509804, 0.31764707, 1)
+bg_color = Color(0.2509804, 0.31764707, 0.23137255, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yl4fo"]
 bg_color = Color(0.38431373, 0.5058824, 0.25490198, 1)
@@ -74,3 +74,5 @@ theme_override_constants/margin_bottom = 35
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Back"
+
+[connection signal="pressed" from="MarginContainer/BackButton" to="." method="_on_back_button_pressed"]
