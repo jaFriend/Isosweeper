@@ -5,6 +5,7 @@ extends Control
 @onready var grid_mines_input: LineEdit = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MinesLine
 @onready var pre_generate_check: CheckBox = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/PreGenerateCheck
 @onready var invalid_input: Label = $PanelContainer/MarginContainer/VBoxContainer/InvalidInput
+@onready var invalid_size: Label = $PanelContainer/MarginContainer/VBoxContainer/InvalidSize
 
 func _on_play_button_pressed() -> void:
 	var x: int = grid_x_input.text.to_int()
@@ -12,11 +13,18 @@ func _on_play_button_pressed() -> void:
 	var mines: int = grid_mines_input.text.to_int()
 	var pre_generate: bool = pre_generate_check.button_pressed
 	if x <= 0 or y <= 0 or mines <= 0:
+		invalid_size.visible = false
 		invalid_input.visible = true
 		return
 	elif x * y <= mines:
+		invalid_size.visible = false
 		invalid_input.visible = true
 		return
+	elif x * y > 1000000:
+		invalid_input.visible = false
+		invalid_size.visible = true
+		return
+		
 
 	var level_info: LevelInfo = LevelInfo.new()
 	level_info.x = x
