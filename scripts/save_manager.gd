@@ -1,22 +1,37 @@
 extends Node
 
-const FILENAME = "user://game.sav"
+const GAME_SAVE_FILE = "user://game.sav"
+const BEST_TIMES_FILE = "user://best_times.sav"
 
 func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
-	var file: FileAccess = FileAccess.open(FILENAME, FileAccess.READ)
-	if file:
-		LevelManager.completed_levels = file.get_64()
+	var game_save_file: FileAccess = FileAccess.open(GAME_SAVE_FILE, FileAccess.READ)
+	if game_save_file:
+		LevelManager.completed_levels = game_save_file.get_64()
+
+	var best_times_file: FileAccess = FileAccess.open(BEST_TIMES_FILE, FileAccess.READ)
+	if best_times_file:
+		var best_times_buffer: PackedByteArray = best_times_file.get_buffer(best_times_file.get_length())
+		var unpacked_best_times = bytes_to_var_with_objects(best_times_buffer)
+		if unpacked_best_times:
+			LevelManager.levels_time.assign(unpacked_best_times)
+	LevelManager.levels_time.resize(LevelManager.completed_levels)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		_handle_exit_save()
 
 func _handle_exit_save():
-	var file: FileAccess = FileAccess.open(FILENAME, FileAccess.WRITE)
-	if file:
-		LevelManager.completed_levels = file.store_64(LevelManager.completed_levels)
+	var game_save_file: FileAccess = FileAccess.open(GAME_SAVE_FILE, FileAccess.WRITE)
+	if game_save_file:
+		game_save_file.store_64(LevelManager.completed_levels)
+		
+	var best_times_file: FileAccess = FileAccess.open(BEST_TIMES_FILE, FileAccess.WRITE)
+	var best_times_buffer: PackedByteArray = var_to_bytes_with_objects(LevelManager.levels_time)
+	if best_times_file:
+		best_times_file.store_buffer(best_times_buffer)
 	get_tree().quit()
 
 func delete_save() -> void:
-	DirAccess.remove_absolute(FILENAME)
+	DirAccess.remove_absolute(GAME_SAVE_FILE)
+	DirAccess.remove_absolute(BEST_TIMES_FILE)

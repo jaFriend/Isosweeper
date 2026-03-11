@@ -10,12 +10,12 @@ func _ready() -> void:
 		return
 	
 	var status: bool = true
-	status = render_levels(LevelManager.completed_levels + 1)
+	status = render_levels()
 	
 	if not status:
 		return
 
-func render_levels(unlocked_levels: int) -> bool:
+func render_levels() -> bool:
 	for child in container.get_children():
 		child.queue_free()
 
@@ -24,8 +24,10 @@ func render_levels(unlocked_levels: int) -> bool:
 		container.add_child(card)
 		cards.append(card)
 		card.setup(i, LevelManager.levels[i])
-		if i < unlocked_levels:
+		if i < LevelManager.completed_levels + 1:
 			card._unlock()
+		if i < LevelManager.completed_levels:
+			card.set_time(LevelManager.levels_time[i])
 		card.selected.connect(LevelManager.load_level)
 
 	return true
