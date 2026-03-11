@@ -3,7 +3,11 @@ extends Node
 @onready var numbers_grid_map: GridMap = $NumbersGridMap
 @onready var tiles_grid_map: GridMap = $TilesGridMap
 @onready var flags_grid_map: GridMap = $FlagsGridMap
-@onready var level_pause_menu = get_node("LevelPauseMenu")
+@onready var mines_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/Mines
+@onready var mines_left_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/MinesLeft
+@onready var tiles_left_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/TilesLeft
+
+@onready var level_pause_menu = $LevelPauseMenu
 var pause_menu_state: bool = false:
 	set(value):
 		pause_menu_state = value
@@ -63,9 +67,7 @@ func _ready() -> void:
 	cells_shown = 0
 	cells_left = width * height - mines
 	mines_left = mines
-	var mines_label = get_node("LevelUI/Mines")
-	var mines_left_label = get_node("LevelUI/MinesLeft")
-	var tiles_left_label = get_node("LevelUI/TilesLeft")
+	
 	tiles_left_label.text = str(cells_left)
 	mines_label.text = str(mines)
 	mines_left_label.text = str(mines_left)
@@ -85,18 +87,18 @@ func _flag_grid(pos: Vector2i):
 	grid_level.flag(grid_pos)
 
 func _flag_cell(pos: Vector2i, flag: bool):
-	var tiles_left_label = get_node("LevelUI/MinesLeft")
+
 	var grid_map_pos: Vector3i = Vector3i(pos.x - self.width / 2 + 1, 0, pos.y - self.height / 2 + 1)
 	if flag:
 		flags_grid_map.set_cell_item(grid_map_pos, self.flag_revealed, 10)
 		mines_left -= 1
 		if mines_left >= 0:
-			tiles_left_label.text = str(mines_left)
+			mines_left_label.text = str(mines_left)
 	else:
 		flags_grid_map.set_cell_item(grid_map_pos, self.flag_hidden, 10)
 		mines_left += 1
 		if mines_left >= 0:
-			tiles_left_label.text = str(mines_left)
+			mines_left_label.text = str(mines_left)
 
 func _reveal_cell(pos: Vector2i):
 	var grid_map_pos: Vector3i = Vector3i(pos.x - self.width / 2 + 1, 0, pos.y - self.height / 2 + 1)
@@ -104,8 +106,7 @@ func _reveal_cell(pos: Vector2i):
 
 	numbers_grid_map.set_cell_item(grid_map_pos, grid_level.grid[pos.x][pos.y].mines - 1, 12)
 	tiles_grid_map.set_cell_item(grid_map_pos, self.tile_revealed, 0)
-
-	var tiles_left_label = get_node("./LevelUI/TilesLeft")
+	
 	tiles_left_label.text = str(cells_left - cells_shown)
 	
 	if cells_shown == cells_left:

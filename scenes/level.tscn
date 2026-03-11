@@ -32,9 +32,9 @@ font_color = Color(0, 0.735357, 0, 1)
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3wf17"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2r41h"]
 border_width_bottom = 3
-border_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+border_color = Color(0.34901962, 0.34901962, 0.34901962, 1)
 
 [node name="Level" type="Node3D" unique_id=1223777596]
 script = ExtResource("1_w7c3h")
@@ -93,74 +93,65 @@ anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 
-[node name="Bar" type="Panel" parent="LevelUI" unique_id=768885581]
-custom_minimum_size = Vector2(0, 50)
+[node name="PanelContainer" type="PanelContainer" parent="LevelUI" unique_id=2105011381]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_3wf17")
+theme_override_styles/panel = SubResource("StyleBoxFlat_2r41h")
 
-[node name="Mines_text" type="Label" parent="LevelUI" unique_id=1229051996]
-layout_mode = 0
-offset_left = 9.0
-offset_top = 6.0
-offset_right = 66.0
-offset_bottom = 29.0
-scale = Vector2(1.5, 1.5)
+[node name="MarginContainer" type="MarginContainer" parent="LevelUI/PanelContainer" unique_id=1891525397]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LevelUI/PanelContainer/MarginContainer" unique_id=1093348575]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Mines_text" type="Label" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=1229051996]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+theme_override_font_sizes/font_size = 18
 text = "MINES:"
 
-[node name="Mines" type="Label" parent="LevelUI" unique_id=1439774779]
-layout_mode = 0
-offset_left = 98.0
-offset_top = 6.0
-offset_right = 126.0
-offset_bottom = 29.0
-scale = Vector2(1.5, 1.5)
+[node name="Mines" type="Label" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=1439774779]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+theme_override_font_sizes/font_size = 18
 text = "000"
 horizontal_alignment = 1
 
-[node name="MinesLeft_text" type="Label" parent="LevelUI" unique_id=2098212806]
-layout_mode = 0
-offset_left = 153.0
-offset_top = 6.0
-offset_right = 247.0
-offset_bottom = 29.0
-scale = Vector2(1.5, 1.5)
+[node name="Control" type="Control" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=487074355]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="MinesLeft_text" type="Label" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=2098212806]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+theme_override_font_sizes/font_size = 18
 text = "MINES LEFT:"
 
-[node name="MinesLeft" type="Label" parent="LevelUI" unique_id=1418452615]
-layout_mode = 0
-offset_left = 300.0
-offset_top = 6.0
-offset_right = 328.0
-offset_bottom = 29.0
-scale = Vector2(1.5, 1.5)
+[node name="MinesLeft" type="Label" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=1418452615]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+theme_override_font_sizes/font_size = 18
 text = "000"
 horizontal_alignment = 1
 
-[node name="TilesLeft_text" type="Label" parent="LevelUI" unique_id=2052262330]
-layout_mode = 0
-offset_left = 356.0
-offset_top = 6.0
-offset_right = 442.0
-offset_bottom = 29.0
-scale = Vector2(1.5, 1.5)
+[node name="Control2" type="Control" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=843304299]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="TilesLeft_text" type="Label" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=2052262330]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+theme_override_font_sizes/font_size = 18
 text = "TILES LEFT:"
 
-[node name="TilesLeft" type="Label" parent="LevelUI" unique_id=1412899579]
-layout_mode = 0
-offset_left = 491.0
-offset_top = 6.0
-offset_right = 519.0
-offset_bottom = 29.0
-scale = Vector2(1.5, 1.5)
+[node name="TilesLeft" type="Label" parent="LevelUI/PanelContainer/MarginContainer/HBoxContainer" unique_id=1412899579]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+theme_override_font_sizes/font_size = 18
 text = "000"
 horizontal_alignment = 1
 
