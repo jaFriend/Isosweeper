@@ -18,7 +18,7 @@ func _ready() -> void:
 func render_levels(unlocked_levels: int) -> bool:
 	for child in container.get_children():
 		child.queue_free()
-	
+
 	for i in range(LevelManager.levels.size()):
 		var card = card_scene.instantiate()
 		container.add_child(card)

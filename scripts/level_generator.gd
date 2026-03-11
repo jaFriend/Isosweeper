@@ -19,8 +19,12 @@ func _run() -> void:
 	var levels: Array[LevelInfo]
 	var filename: String = "levels.dat"
 	add_one_level(levels, create_level_info(10, 10, 5, false))
-	multi_add_levels_by_range(levels, LevelRequirements.new(10, 10, 10), 
-							  LevelRequirements.new(64, 64, 600), 99, 45)
+	multi_add_levels_by_range(levels, 
+							  LevelRequirements.new(10, 10, 10), 
+							  LevelRequirements.new(64, 64, 500), 99, 45)
+	multi_add_levels_by_range(levels, 
+							  LevelRequirements.new(64, 64, 900), 
+							  LevelRequirements.new(256, 256, 12000), 100, 45)
 	save_levels_data(levels, filename)
 	print("Generated Levels")
 

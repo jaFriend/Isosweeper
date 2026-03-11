@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dh8cmwu1hh53b"]
+
+[ext_resource type="PackedScene" uid="uid://c1s3yrwuwbe8s" path="res://assets/flag/flag.gltf" id="1_q1sjw"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cv413"]
+height = 1.4543457
+radius = 0.049316406
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q1sjw"]
+size = Vector3(0.12402344, 0.41503906, 0.7796631)
+
+[node name="flag" unique_id=731109194 instance=ExtResource("1_q1sjw")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cylinder" parent_id_path=PackedInt32Array(961907064) index="0" unique_id=301683400]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cylinder/StaticBody3D" index="0" unique_id=2116766376]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 0.76477087, 0)
+shape = SubResource("CylinderShape3D_cv413")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Cylinder/StaticBody3D" index="1" unique_id=438335587]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 1.1837466, -0.40301538)
+shape = SubResource("BoxShape3D_q1sjw")

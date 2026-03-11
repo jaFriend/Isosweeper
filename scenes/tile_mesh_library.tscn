@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bghm7us7urtyq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0n8vj"]
+albedo_color = Color(0.735357, 0.735357, 0.735357, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0n8vj"]
+material = SubResource("StandardMaterial3D_0n8vj")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0n8vj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00b1f"]
+albedo_color = Color(0.58383155, 0.58383155, 0.58383155, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_00b1f"]
+material = SubResource("StandardMaterial3D_00b1f")
+
+[node name="TileMeshLibrary" type="Node3D" unique_id=1189320570]
+
+[node name="Block" type="MeshInstance3D" parent="." unique_id=59381845]
+mesh = SubResource("BoxMesh_0n8vj")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Block" unique_id=668938673]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block/StaticBody3D" unique_id=192795839]
+shape = SubResource("BoxShape3D_0n8vj")
+
+[node name="Block_revealed" type="MeshInstance3D" parent="." unique_id=338560913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+mesh = SubResource("BoxMesh_00b1f")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Block_revealed" unique_id=160088752]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block_revealed/StaticBody3D" unique_id=329948592]
+shape = SubResource("BoxShape3D_0n8vj")

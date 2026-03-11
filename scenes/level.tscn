@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://d1l6tnwfngyp6" path="res://scripts/level.gd" id="1_w7c3h"]
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="2_w8frs"]
 [ext_resource type="PackedScene" uid="uid://cygjdgyxfrwka" path="res://scenes/level_pause_menu.tscn" id="3_w8frs"]
+[ext_resource type="MeshLibrary" uid="uid://bfrx7fhioyk5f" path="res://assets/numbers.tres" id="4_mx8sn"]
+[ext_resource type="MeshLibrary" uid="uid://bjunplhftxyox" path="res://assets/tiles.tres" id="5_ppgk2"]
+[ext_resource type="MeshLibrary" uid="uid://dfscigx1e21yj" path="res://assets/flags.tres" id="6_2r41h"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -33,7 +36,8 @@ outline_color = Color(0, 0, 0, 1)
 border_width_bottom = 3
 border_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
 
-[node name="LevelWorld" type="Node3D" unique_id=1223777596]
+[node name="Level" type="Node3D" unique_id=1223777596]
+script = ExtResource("1_w7c3h")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1800104595]
 environment = SubResource("Environment_o52t6")
@@ -41,9 +45,6 @@ environment = SubResource("Environment_o52t6")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2033883832]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
-
-[node name="Level" type="Node" parent="." unique_id=1380531411]
-script = ExtResource("1_w7c3h")
 
 [node name="ProtoController" parent="." unique_id=1334512796 instance=ExtResource("2_w8frs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4540521, 0.44144678, 1.889411)
@@ -165,3 +166,21 @@ horizontal_alignment = 1
 
 [node name="LevelPauseMenu" parent="." unique_id=1526420097 instance=ExtResource("3_w8frs")]
 visible = false
+
+[node name="NumbersGridMap" type="GridMap" parent="." unique_id=237946052]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -0.45, 0)
+mesh_library = ExtResource("4_mx8sn")
+cell_size = Vector3(1, 1, 1)
+
+[node name="TilesGridMap" type="GridMap" parent="." unique_id=758209992 groups=["tiles_grid_map"]]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1.5, 0)
+mesh_library = ExtResource("5_ppgk2")
+cell_size = Vector3(1, 1, 1)
+collision_layer = 3
+data = {
+"cells": PackedInt32Array(0, 65535, 786432)
+}
+
+[node name="FlagsGridMap" type="GridMap" parent="." unique_id=2102483366]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh_library = ExtResource("6_2r41h")

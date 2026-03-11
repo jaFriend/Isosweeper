@@ -131,17 +131,17 @@ func _physics_process(delta: float) -> void:
 	var ray = $Head/Camera3D/RayCast3D
 	if ray.is_colliding():
 		var ray_collider = ray.get_collider()
-		if ray_collider.has_method("get_tile_coordinates") and mouse_captured:
-			var coords: Vector2i = ray_collider.get_tile_coordinates()
-			
-			selected_coord = coords
+
+		if ray_collider and mouse_captured:
+			var coords3: Vector3i = ray_collider.local_to_map(ray.get_collision_point() - (ray.get_collision_normal() * 0.1))
+			var x = int(floor(float(coords3.x) / 2.0))
+			var z = int(floor(float(coords3.z) / 2.0))
+			var coords2: Vector2i = Vector2i(x, z)
+
 			if Input.is_action_just_pressed(input_click):
-				GameEvents.player_send_mine_signal.emit(coords)
+				GameEvents.player_send_mine_signal.emit(coords2)
 			if Input.is_action_just_pressed(input_second_click):
-				GameEvents.player_send_flag_signal.emit(coords)
-			#print("Looking at Tile: ", coords)
-
-
+				GameEvents.player_send_flag_signal.emit(coords2)
 
 ## Rotate us to look around.
 ## Base of controller rotates around y (left/right). Head rotates around x (up/down).

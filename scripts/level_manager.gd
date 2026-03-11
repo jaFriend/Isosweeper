@@ -6,17 +6,18 @@ var completed_levels: int
 var level_completed: bool = 0
 var custom_level_info: LevelInfo
 
+const CUSTOM_LEVEL: int = -1
 func _ready() -> void:
 	open_levels()
 
 func win() -> void:
-	if self.idx == -1:
+	if self.idx == self.CUSTOM_LEVEL:
 		return
 	self.level_completed = true
 	self.unlock_level()
 
 func lose() -> void:
-	if self.idx == -1:
+	if self.idx == self.CUSTOM_LEVEL:
 		return
 	self.level_completed = false
 
@@ -31,7 +32,7 @@ func unlock_level() -> void:
 		LevelManager.completed_levels += 1
 
 func get_level() -> LevelInfo:
-	if self.idx == -1:
+	if self.idx == self.CUSTOM_LEVEL:
 		return custom_level_info
 	return levels[idx]
 
@@ -50,5 +51,5 @@ func open_levels() -> bool:
 
 func load_custom_level(level_info: LevelInfo) -> void:
 	self.custom_level_info = level_info
-	self.idx = -1
+	self.idx = self.CUSTOM_LEVEL
 	SceneManager.transition("res://scenes/level.tscn")

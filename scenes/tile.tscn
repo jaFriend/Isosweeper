@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://j6hgdc8jnjim" path="res://scripts/tile.gd" id="1_3dk36"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3iir"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ywnoi"]
 albedo_color = Color(0.735357, 0.735357, 0.735357, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_uiyn6"]
-material = SubResource("StandardMaterial3D_j3iir")
+material = SubResource("StandardMaterial3D_ywnoi")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j8k5k"]
 albedo_color = Color(0.58383155, 0.58383155, 0.58383155, 1)
@@ -37,10 +37,3 @@ surface_material_override/0 = SubResource("StandardMaterial3D_3dk36")
 
 [node name="Block_col" type="CollisionShape3D" parent="." unique_id=2101654264]
 shape = SubResource("BoxShape3D_uiyn6")
-
-[node name="AdjacentMines" type="Label3D" parent="." unique_id=1532298724]
-transform = Transform3D(0.8, 0, 0, 0, -3.4969112e-08, 0.8, 0, -0.8, -3.4969112e-08, 0, 0.5012755, 0)
-visible = false
-text = "X"
-font_size = 256
-outline_size = 16

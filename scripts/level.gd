@@ -1,7 +1,9 @@
 extends Node
 
-
-@onready var level_pause_menu = get_node("../LevelPauseMenu")
+@onready var numbers_grid_map: GridMap = $NumbersGridMap
+@onready var tiles_grid_map: GridMap = $TilesGridMap
+@onready var flags_grid_map: GridMap = $FlagsGridMap
+@onready var level_pause_menu = get_node("LevelPauseMenu")
 var pause_menu_state: bool = false:
 	set(value):
 		pause_menu_state = value
@@ -13,11 +15,16 @@ var mines: int = 1
 var pre_generate: bool = false
 @export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
 var grid_level: Grid
-var tiles_map: Dictionary
 
 var cells_shown: int
 var cells_left: int
 var mines_left: int
+
+var tile_hidden: int
+var tile_revealed: int
+
+var flag_hidden: int = -1
+var flag_revealed: int
 
 func load_level() -> void:
 	var level_info: LevelInfo = LevelManager.get_level()
@@ -38,9 +45,7 @@ func _ready() -> void:
 	print("--- Grid Generation Profile ---")
 	print("Total Cells: ", self.width * self.height)
 	print("Execution Time: %d μs (%.3f ms)" % [total_time_usec, total_time_msec])
-	tiles_map = {}
 	_generate_3d_grid()
-	
 	print("Generated grid")
 	
 	GameEvents.player_send_mine_signal.connect(_mine_grid)
@@ -50,65 +55,63 @@ func _ready() -> void:
 	grid_level.game_over.connect(_on_defeat)
 	level_pause_menu.resume_pressed.connect(_resume_game)
 	level_pause_menu.exit_pressed.connect(_exit_game)
-
+	
+	tile_hidden = 0
+	tile_revealed = 1
+	flag_revealed = 0
+	
 	cells_shown = 0
 	cells_left = width * height - mines
 	mines_left = mines
-	var mines_label = get_node("../LevelUI/Mines")
-	var mines_left_label = get_node("../LevelUI/MinesLeft")
-	var tiles_left_label = get_node("../LevelUI/TilesLeft")
+	var mines_label = get_node("LevelUI/Mines")
+	var mines_left_label = get_node("LevelUI/MinesLeft")
+	var tiles_left_label = get_node("LevelUI/TilesLeft")
 	tiles_left_label.text = str(cells_left)
 	mines_label.text = str(mines)
 	mines_left_label.text = str(mines_left)
 
-	print("cells_left: %d" % [cells_left])
-
 func _generate_3d_grid() -> void:
-	for x in range(width):
-		for y in range(height):
-			var tile = tile_scene.instantiate()
-			var tile_size: float = 2
-			var gap_size: float = 0.05
-			add_child(tile)
-			tile.scale = Vector3(tile_size - gap_size, 1, tile_size - gap_size)
-			tile.position = Vector3(tile_size * (x - width / 2 + 1) , 0, tile_size * (y - height / 2 + 1))
-			var pos: Vector2i = Vector2i(x,y)
-			tile.setup(pos)
-
-			tiles_map[pos] = tile
+	tiles_grid_map.cell_scale *= 0.98
+	for x in range(self.width):
+		for y in range(self.height):
+			tiles_grid_map.set_cell_item(Vector3i(x - self.width / 2 + 1, 0, y - self.height / 2 + 1), self.tile_hidden, 0)
 
 func _mine_grid(pos: Vector2i):
-	grid_level.mine(pos)
-	
+	var grid_pos: Vector2i = Vector2i(pos.x + self.width / 2 - 1, pos.y + self.height / 2 - 1)
+	grid_level.mine(grid_pos)
+
 func _flag_grid(pos: Vector2i):
-	grid_level.flag(pos)
+	var grid_pos: Vector2i = Vector2i(pos.x + self.width / 2 - 1, pos.y + self.height / 2 - 1)
+	grid_level.flag(grid_pos)
 
 func _flag_cell(pos: Vector2i, flag: bool):
-	var tiles_left_label = get_node("../LevelUI/MinesLeft")
+	var tiles_left_label = get_node("LevelUI/MinesLeft")
+	var grid_map_pos: Vector3i = Vector3i(pos.x - self.width / 2 + 1, 0, pos.y - self.height / 2 + 1)
 	if flag:
+		flags_grid_map.set_cell_item(grid_map_pos, self.flag_revealed, 10)
 		mines_left -= 1
 		if mines_left >= 0:
 			tiles_left_label.text = str(mines_left)
 	else:
+		flags_grid_map.set_cell_item(grid_map_pos, self.flag_hidden, 10)
 		mines_left += 1
 		if mines_left >= 0:
 			tiles_left_label.text = str(mines_left)
-	tiles_map[pos]._flag(flag)
 
 func _reveal_cell(pos: Vector2i):
+	var grid_map_pos: Vector3i = Vector3i(pos.x - self.width / 2 + 1, 0, pos.y - self.height / 2 + 1)
 	cells_shown += 1
-	print("mines: %d" % [cells_shown])
-	var adj_mine_value: Cell = grid_level._get_cell(pos)
-	tiles_map[pos].set_mine_value(grid_level.grid[pos.x][pos.y].mines)
-	tiles_map[pos]._reveal()
 
-	var tiles_left_label = get_node("../LevelUI/TilesLeft")
+	numbers_grid_map.set_cell_item(grid_map_pos, grid_level.grid[pos.x][pos.y].mines - 1, 12)
+	tiles_grid_map.set_cell_item(grid_map_pos, self.tile_revealed, 0)
+
+	var tiles_left_label = get_node("./LevelUI/TilesLeft")
 	tiles_left_label.text = str(cells_left - cells_shown)
 	
 	if cells_shown == cells_left:
 		LevelManager.win()
 		GameEvents.is_mouse_captured.emit(false)
-		var victory_label: Node = get_node("../Victory")
+		var victory_label: Node = get_node("./Victory")
 		victory_label.visible = true
 		
 		await get_tree().create_timer(2.0).timeout
@@ -121,7 +124,7 @@ func _process(delta: float) -> void:
 func _on_defeat() -> void:
 	LevelManager.lose()
 	GameEvents.is_mouse_captured.emit(false)
-	var defeat_label: Node = get_node("../Defeat")
+	var defeat_label: Node = get_node("./Defeat")
 	defeat_label.visible = true
 	await get_tree().create_timer(2.0).timeout
 	_exit_game()

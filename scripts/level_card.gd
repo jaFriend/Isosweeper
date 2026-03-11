@@ -19,7 +19,7 @@ func setup(level: int, level_info: LevelInfo):
 	else:
 		safety_string += "Nay"
 	safety_label.text = safety_string
-	
+
 	mines_label.text = "Mines: %d" % [level_info.mines]
 
 func _unlock() -> void:
