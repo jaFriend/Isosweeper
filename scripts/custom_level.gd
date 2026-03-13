@@ -24,7 +24,6 @@ func _on_play_button_pressed() -> void:
 		invalid_input.visible = false
 		invalid_size.visible = true
 		return
-		
 
 	var level_info: LevelInfo = LevelInfo.new()
 	level_info.x = x

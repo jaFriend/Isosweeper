@@ -3,6 +3,7 @@ extends Node
 @onready var numbers_grid_map: GridMap = $NumbersGridMap
 @onready var tiles_grid_map: GridMap = $TilesGridMap
 @onready var flags_grid_map: GridMap = $FlagsGridMap
+@onready var tiles_collision: CollisionShape3D = $TilesBody/TilesCollision
 @onready var mines_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/Mines
 @onready var mines_left_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/MinesLeft
 @onready var tiles_left_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/TilesLeft
@@ -18,7 +19,6 @@ var mines: int = 1
 var pre_generate: bool = false
 var time_started: int
 
-@export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
 var grid_level: Grid
 
 var cells_shown: int
@@ -66,13 +66,14 @@ func _ready() -> void:
 
 func _generate_3d_grid() -> void:
 	tiles_grid_map.cell_scale *= 0.98
+	tiles_collision.shape.size = Vector3(self.width * 2, 2, self.height * 2)
 	for x in range(self.width):
 		for y in range(self.height):
 			tiles_grid_map.set_cell_item(Vector3i(x - self.width / 2 + 1, 0, y - self.height / 2 + 1), self.tile_hidden, 0)
 
 func _mine_grid(pos: Vector2i):
 	var grid_pos: Vector2i = Vector2i(pos.x + self.width / 2 - 1, pos.y + self.height / 2 - 1)
-	grid_level.mine(grid_pos)
+	grid_level.mine(grid_pos, get_tree())
 
 func _flag_grid(pos: Vector2i):
 	var grid_pos: Vector2i = Vector2i(pos.x + self.width / 2 - 1, pos.y + self.height / 2 - 1)
@@ -103,17 +104,19 @@ func _reveal_cell(pos: Vector2i):
 	
 	if cells_shown == cells_left:
 		var time: int = (Time.get_ticks_msec() - time_started) / 1000
-		LevelManager.win(time)
-		GameEvents.is_mouse_captured.emit(false)
-		var victory_label: Node = get_node("./Victory")
-		victory_label.visible = true
-		
-		await get_tree().create_timer(2.0).timeout
-		_exit_game()
+		self._on_win(time)
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause_button"):
 		self.pause_menu_state = not self.pause_menu_state
+
+func _on_win(time :int) -> void:
+	LevelManager.win(time)
+	GameEvents.is_mouse_captured.emit(false)
+	var victory_label: Node = get_node("./Victory")
+	victory_label.visible = true
+	await get_tree().create_timer(2.0).timeout
+	_exit_game()
 
 func _on_defeat() -> void:
 	LevelManager.lose()
@@ -125,9 +128,9 @@ func _on_defeat() -> void:
 
 func _exit_game() -> void:
 	if LevelManager.idx == -1:
-		SceneManager.transition("res://scenes/custom_level.tscn")
+		SceneManager.transition_deferred("res://scenes/custom_level.tscn")
 	else:
-		SceneManager.transition("res://scenes/level_menu.tscn")
+		SceneManager.transition_deferred("res://scenes/level_menu.tscn")
 
 func _resume_game() -> void:
 	self.pause_menu_state = false

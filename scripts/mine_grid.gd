@@ -86,7 +86,7 @@ func flag(pos: Vector2i) -> void:
 	cell.toggle_flagged()
 	flag_cell.emit(pos, cell.flagged())
 
-func mine(pos: Vector2i) -> void:
+func mine(pos: Vector2i, tree: SceneTree) -> void:
 	var first_cell: Cell = _get_cell_in_bounds(pos)
 	if not first_cell or first_cell.flagged() or first_cell.mined():
 		return
@@ -94,22 +94,33 @@ func mine(pos: Vector2i) -> void:
 		game_over.emit()
 		return
 
-	var cell_queue: Array[Vector2i] = [pos]
-	while !cell_queue.is_empty():
-		var cell_pos: Vector2i = cell_queue.pop_front()
-		var cell: Cell = _get_cell_in_bounds(cell_pos)
-		if not cell or cell.mined() or cell.flagged():
-			continue
-			
-		cell.mine()
-		if self.late_generation:
-			self.late_generation = false
-			_generate_mines()
+	var visited = {}
+	var current_layer: Array[Vector2i] = [pos]
+	visited[pos] = true
 
-		if cell.mines == 0:
-			for adjacent_index in ADJACENT_INDEXES:
-				var adj_cell: Cell = _get_cell_in_bounds(cell_pos + adjacent_index)
-				if adj_cell and not adj_cell.is_mine() and not adj_cell.is_revealed:
-					cell_queue.push_back(cell_pos + adjacent_index)
+	while !current_layer.is_empty():
+		if not is_instance_valid(tree):
+			return
+		var next_layer: Array[Vector2i] = []
+		
+		for cell_pos in current_layer:
+			var cell: Cell = _get_cell_in_bounds(cell_pos)
+			if not cell or cell.mined() or cell.flagged():
+				continue
+				
+			cell.mine()
+			if self.late_generation:
+				self.late_generation = false
+				_generate_mines()
+			reveal_cell.emit(cell_pos)
+			if cell.mines == 0:
+				for adjacent_index in ADJACENT_INDEXES:
+					var adj_pos: Vector2i = cell_pos + adjacent_index
+					var adj_cell: Cell = _get_cell_in_bounds(adj_pos)
+					if adj_cell and not adj_cell.is_mine() and not adj_cell.is_revealed and not visited.has(adj_cell):
+						next_layer.push_back(adj_pos)
+						visited[adj_pos] = true
+		current_layer = next_layer
 
-		reveal_cell.emit(cell_pos)
+		if !current_layer.is_empty():
+			await tree.create_timer(0.1).timeout

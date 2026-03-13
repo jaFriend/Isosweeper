@@ -21,6 +21,11 @@ LevelManager="*uid://cmxwvvfqa78t1"
 SceneManager="*uid://befeu70kx1py8"
 SaveManager="*uid://dokl02esu1ayo"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_height"
+
 [global_group]
 
 tiles_grid_map=""
