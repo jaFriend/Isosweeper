@@ -20,7 +20,8 @@ func _run() -> void:
 	var filename: String = "levels.dat"
 	add_one_level(levels, create_level_info(10, 10, 5, false))
 	multi_add_levels_by_range(levels, 
-							  LevelRequirements.new(10, 10, 10), 
+							  LevelRequirements.new(10, 10, 10),
+							
 							  LevelRequirements.new(64, 64, 500), 99, 45)
 	multi_add_levels_by_range(levels, 
 							  LevelRequirements.new(64, 64, 900), 

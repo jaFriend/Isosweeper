@@ -30,7 +30,7 @@ func load_level(index: int) -> void:
 	self.idx = index
 	self.level_completed = false
 	self.completed_level_time = 0
-	SceneManager.transition("res://scenes/level.tscn")
+	SceneManager.transition(SceneManager.SCENES.LEVEL)
 
 func unlock_level() -> void:
 	if self.level_completed and self.idx == self.completed_levels:
@@ -61,4 +61,4 @@ func open_levels() -> bool:
 func load_custom_level(level_info: LevelInfo) -> void:
 	self.custom_level_info = level_info
 	self.idx = self.CUSTOM_LEVEL
-	SceneManager.transition("res://scenes/level.tscn")
+	SceneManager.transition(SceneManager.SCENES.LEVEL)

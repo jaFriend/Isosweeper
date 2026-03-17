@@ -4,10 +4,10 @@ extends Node
 @onready var tiles_grid_map: GridMap = $TilesGridMap
 @onready var flags_grid_map: GridMap = $FlagsGridMap
 @onready var tiles_collision: CollisionShape3D = $TilesBody/TilesCollision
-@onready var mines_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/Mines
-@onready var mines_left_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/MinesLeft
-@onready var tiles_left_label: Label = $LevelUI/PanelContainer/MarginContainer/HBoxContainer/TilesLeft
 @onready var level_pause_menu = $LevelPauseMenu
+@onready var proto_controller = $ProtoController
+@onready var level_ui = $LevelUI
+
 var pause_menu_state: bool = false:
 	set(value):
 		pause_menu_state = value
@@ -39,9 +39,11 @@ func load_level() -> void:
 	self.pre_generate = level_info.pre_generate
 
 func _ready() -> void:
+	#AudioManager.stop_audio_bus(AudioManager.MUSIC)
 	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
 	_generate_3d_grid()
+	proto_controller.position = Vector3(self.width, 1, self.height)
 
 	GameEvents.player_send_mine_signal.connect(_mine_grid)
 	GameEvents.player_send_flag_signal.connect(_flag_grid)
@@ -58,49 +60,48 @@ func _ready() -> void:
 	self.cells_shown = 0
 	self.cells_left = width * height - mines
 	self.mines_left = mines
+	level_ui.setup_ui(self.mines, self.mines_left, self.cells_left)
 
-	self.tiles_left_label.text = str(cells_left)
-	self.mines_label.text = str(mines)
-	self.mines_left_label.text = str(mines_left)
 	time_started = Time.get_ticks_msec()
 
 func _generate_3d_grid() -> void:
 	tiles_grid_map.cell_scale *= 0.98
+	tiles_collision.position = Vector3(self.width, 0, self.height)
 	tiles_collision.shape.size = Vector3(self.width * 2, 2, self.height * 2)
 	for x in range(self.width):
 		for y in range(self.height):
-			tiles_grid_map.set_cell_item(Vector3i(x - self.width / 2 + 1, 0, y - self.height / 2 + 1), self.tile_hidden, 0)
+			tiles_grid_map.set_cell_item(Vector3i(x, 0, y), self.tile_hidden, 0)
 
 func _mine_grid(pos: Vector2i):
-	var grid_pos: Vector2i = Vector2i(pos.x + self.width / 2 - 1, pos.y + self.height / 2 - 1)
+	var grid_pos: Vector2i = Vector2i(pos.x, pos.y)
 	grid_level.mine(grid_pos, get_tree())
 
 func _flag_grid(pos: Vector2i):
-	var grid_pos: Vector2i = Vector2i(pos.x + self.width / 2 - 1, pos.y + self.height / 2 - 1)
+	var grid_pos: Vector2i = Vector2i(pos.x, pos.y)
 	grid_level.flag(grid_pos)
 
 func _flag_cell(pos: Vector2i, flag: bool):
 
-	var grid_map_pos: Vector3i = Vector3i(pos.x - self.width / 2 + 1, 0, pos.y - self.height / 2 + 1)
+	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
 	if flag:
 		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_revealed, 10)
 		self.mines_left -= 1
 		if self.mines_left >= 0:
-			self.mines_left_label.text = str(self.mines_left)
+			level_ui.mines_left_value(self.mines_left)
 	else:
 		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_hidden, 10)
 		self.mines_left += 1
 		if self.mines_left >= 0:
-			self.mines_left_label.text = str(self.mines_left)
+			level_ui.mines_left_value(self.mines_left)
 
 func _reveal_cell(pos: Vector2i):
-	var grid_map_pos: Vector3i = Vector3i(pos.x - self.width / 2 + 1, 0, pos.y - self.height / 2 + 1)
+	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
 	self.cells_shown += 1
 
 	self.numbers_grid_map.set_cell_item(grid_map_pos, self.grid_level.grid[pos.x][pos.y].mines - 1, 12)
 	self.tiles_grid_map.set_cell_item(grid_map_pos, self.tile_revealed, 0)
 
-	self.tiles_left_label.text = str(cells_left - cells_shown)
+	level_ui.tiles_left_value(cells_left - cells_shown)
 	
 	if cells_shown == cells_left:
 		var time: int = (Time.get_ticks_msec() - time_started) / 1000
@@ -109,6 +110,8 @@ func _reveal_cell(pos: Vector2i):
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause_button"):
 		self.pause_menu_state = not self.pause_menu_state
+	if Input.is_action_just_pressed("input_selection") and not self.pause_menu_state:
+		AudioManager.play_audio_track(AudioManager.CLICK_SOUND)
 
 func _on_win(time :int) -> void:
 	LevelManager.win(time)
@@ -128,9 +131,9 @@ func _on_defeat() -> void:
 
 func _exit_game() -> void:
 	if LevelManager.idx == -1:
-		SceneManager.transition_deferred("res://scenes/custom_level.tscn")
+		SceneManager.transition_deferred(SceneManager.SCENES.CUSTOM_LEVEL_MENU)
 	else:
-		SceneManager.transition_deferred("res://scenes/level_menu.tscn")
+		SceneManager.transition_deferred(SceneManager.SCENES.LEVEL_MENU)
 
 func _resume_game() -> void:
 	self.pause_menu_state = false
