@@ -7,6 +7,8 @@ extends Node
 @onready var level_pause_menu = $LevelPauseMenu
 @onready var proto_controller = $ProtoController
 @onready var level_ui = $LevelUI
+@onready var victory_label: Node = $Victory
+@onready var defeat_label: Node = $Defeat
 
 var pause_menu_state: bool = false:
 	set(value):
@@ -39,7 +41,8 @@ func load_level() -> void:
 	self.pre_generate = level_info.pre_generate
 
 func _ready() -> void:
-	#AudioManager.stop_audio_bus(AudioManager.MUSIC)
+	AudioManager.pause_audio_bus(AudioManager.MUSIC)
+
 	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
 	_generate_3d_grid()
@@ -110,13 +113,10 @@ func _reveal_cell(pos: Vector2i):
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause_button"):
 		self.pause_menu_state = not self.pause_menu_state
-	if Input.is_action_just_pressed("input_selection") and not self.pause_menu_state:
-		AudioManager.play_audio_track(AudioManager.CLICK_SOUND)
 
 func _on_win(time :int) -> void:
 	LevelManager.win(time)
 	GameEvents.is_mouse_captured.emit(false)
-	var victory_label: Node = get_node("./Victory")
 	victory_label.visible = true
 	await get_tree().create_timer(2.0).timeout
 	_exit_game()
@@ -124,7 +124,6 @@ func _on_win(time :int) -> void:
 func _on_defeat() -> void:
 	LevelManager.lose()
 	GameEvents.is_mouse_captured.emit(false)
-	var defeat_label: Node = get_node("./Defeat")
 	defeat_label.visible = true
 	await get_tree().create_timer(2.0).timeout
 	_exit_game()
@@ -140,8 +139,10 @@ func _resume_game() -> void:
 
 func _update_pause_menu_state() -> void:
 	if self.pause_menu_state:
+		AudioManager.play_audio_bus(AudioManager.MUSIC)
 		GameEvents.is_mouse_captured.emit(false)
 		self.level_pause_menu.visible = true
 	else:
+		AudioManager.pause_audio_bus(AudioManager.MUSIC)
 		GameEvents.is_mouse_captured.emit(true)
 		self.level_pause_menu.visible = false

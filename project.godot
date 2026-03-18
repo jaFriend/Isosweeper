@@ -13,6 +13,7 @@ config_version=5
 config/name="IsoSweeper"
 run/main_scene="uid://mxatbfqxi0cy"
 config/features=PackedStringArray("4.6", "Forward Plus")
+config/icon="uid://bpnpud7fg15w6"
 
 [audio]
 

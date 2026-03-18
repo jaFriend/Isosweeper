@@ -5,6 +5,7 @@ var cards: Array
 @onready var container: VBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer
 
 func _ready() -> void:
+	AudioManager.play_audio_bus(AudioManager.MUSIC)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	if LevelManager.levels.size() == 0:
 		return

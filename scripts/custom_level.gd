@@ -7,6 +7,9 @@ extends Control
 @onready var invalid_input: Label = $PanelContainer/MarginContainer/VBoxContainer/InvalidInput
 @onready var invalid_size: Label = $PanelContainer/MarginContainer/VBoxContainer/InvalidSize
 
+func _ready() -> void:
+	AudioManager.play_audio_bus(AudioManager.MUSIC)
+
 func _on_play_button_pressed() -> void:
 	var x: int = grid_x_input.text.to_int()
 	var y: int = grid_y_input.text.to_int()

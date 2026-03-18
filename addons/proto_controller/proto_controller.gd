@@ -141,8 +141,10 @@ func _physics_process(delta: float) -> void:
 			var coords2: Vector2i = Vector2i(x, z)
 
 			if Input.is_action_just_pressed(input_click):
+				AudioManager.play_3d_sfx(AudioManager.EFFECTS, AudioManager.CLICK_SOUND, coords3)
 				GameEvents.player_send_mine_signal.emit(coords2)
 			if Input.is_action_just_pressed(input_second_click):
+				AudioManager.play_3d_sfx(AudioManager.EFFECTS, AudioManager.CLICK_SOUND, coords3)
 				GameEvents.player_send_flag_signal.emit(coords2)
 
 ## Rotate us to look around.
