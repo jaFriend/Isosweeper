@@ -7,7 +7,8 @@ func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	var game_save_file: FileAccess = FileAccess.open(GAME_SAVE_FILE, FileAccess.READ)
 	if game_save_file:
-		LevelManager.completed_levels = game_save_file.get_64()
+		restore_levels(game_save_file)
+		restore_audio(game_save_file)
 
 	var best_times_file: FileAccess = FileAccess.open(BEST_TIMES_FILE, FileAccess.READ)
 	if best_times_file:
@@ -24,13 +25,30 @@ func _notification(what: int) -> void:
 func _handle_exit_save():
 	var game_save_file: FileAccess = FileAccess.open(GAME_SAVE_FILE, FileAccess.WRITE)
 	if game_save_file:
-		game_save_file.store_64(LevelManager.completed_levels)
+		save_levels(game_save_file)
+		save_audio(game_save_file)
 		
 	var best_times_file: FileAccess = FileAccess.open(BEST_TIMES_FILE, FileAccess.WRITE)
 	var best_times_buffer: PackedByteArray = var_to_bytes_with_objects(LevelManager.levels_time)
 	if best_times_file:
 		best_times_file.store_buffer(best_times_buffer)
 	get_tree().quit()
+
+func restore_levels(save_file: FileAccess):
+	LevelManager.completed_levels = save_file.get_64()
+
+func save_levels(save_file: FileAccess):
+	save_file.store_64(LevelManager.completed_levels)
+
+func restore_audio(save_file: FileAccess):
+	LevelManager.completed_levels = save_file.get_64()
+	for i in range(AudioServer.bus_count):
+		AudioServer.set_bus_volume_linear(i, save_file.get_float())
+
+func save_audio(save_file: FileAccess):
+	save_file.store_64(LevelManager.completed_levels)
+	for i in range(AudioServer.bus_count):
+		save_file.store_float(AudioServer.get_bus_volume_linear(i))
 
 func delete_save() -> void:
 	DirAccess.remove_absolute(GAME_SAVE_FILE)

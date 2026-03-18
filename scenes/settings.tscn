@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://x1iilw21r3g1"]
+
+[ext_resource type="Script" uid="uid://c26os6876hhf1" path="res://scripts/settings.gd" id="1_5p8wc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rj3wb"]
+bg_color = Color(0.2509804, 0.31764707, 0.23137255, 1)
+
+[node name="LevelMenu" type="Control" unique_id=541501804]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5p8wc")
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1149927435]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rj3wb")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1881900034]
+custom_minimum_size = Vector2(500, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -300.0
+offset_right = 250.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=780871372]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=2109154263]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1426876801]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Panel" unique_id=1838677576]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -22.5
+offset_right = 62.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioPanel" type="Panel" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1631234056]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/AudioPanel" unique_id=1497304529]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -13.0
+offset_right = 35.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 18
+text = "Audio Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1711621766]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 35
+
+[node name="BackButton" type="Button" parent="MarginContainer" unique_id=924308261]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="MarginContainer/BackButton" to="." method="_on_back_button_pressed"]

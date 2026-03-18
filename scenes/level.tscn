@@ -7,6 +7,7 @@
 [ext_resource type="MeshLibrary" uid="uid://bfrx7fhioyk5f" path="res://assets/numbers.tres" id="4_mx8sn"]
 [ext_resource type="MeshLibrary" uid="uid://bjunplhftxyox" path="res://assets/tiles.tres" id="5_ppgk2"]
 [ext_resource type="MeshLibrary" uid="uid://dfscigx1e21yj" path="res://assets/flags.tres" id="6_2r41h"]
+[ext_resource type="Script" uid="uid://dbcfkqtxw66lr" path="res://scripts/tiles_grid_map.gd" id="7_b121j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -101,6 +102,7 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1.5, 0)
 mesh_library = ExtResource("5_ppgk2")
 cell_size = Vector3(1, 1, 1)
 collision_layer = 3
+script = ExtResource("7_b121j")
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="FlagsGridMap" type="GridMap" parent="." unique_id=2102483366]

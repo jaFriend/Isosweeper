@@ -136,8 +136,6 @@ func _ready() -> void:
 	setup_tracks()
 	
 	play_audio_track(self.MAIN_MUSIC)
-	for i in range(AudioServer.bus_count):
-		print("Bus: %s" %[AudioServer.get_bus_name(i)])
 
 func setup_players() -> void:
 	stream_players = StreamPlayers.new()
@@ -169,4 +167,4 @@ func play_3d_sfx(bus_name: StringName, track_name: StringName, position: Vector3
 func set_bus_volume(bus_name: StringName, percentage: float) -> void:
 	var bus_index = AudioServer.get_bus_index(bus_name)
 	if bus_index != -1:
-		AudioServer.set_bus_volume_db(bus_index, linear_to_db(percentage))
+		AudioServer.set_bus_volume_linear(bus_index, percentage)

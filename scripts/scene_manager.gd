@@ -7,7 +7,8 @@ const SCENES: Dictionary = {
 	"MAIN_MENU": "res://scenes/main_menu.tscn",
 	"LEVEL_MENU": "res://scenes/level_menu.tscn",
 	"CUSTOM_LEVEL_MENU": "res://scenes/custom_level.tscn",
-	"LEVEL": "res://scenes/level.tscn"
+	"LEVEL": "res://scenes/level.tscn",
+	"SETTINGS": "res://scenes/settings.tscn"
 }
 
 func _ready() -> void:

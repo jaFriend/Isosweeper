@@ -136,10 +136,10 @@ func _physics_process(delta: float) -> void:
 			var grid_map = get_node("../TilesGridMap")
 
 			var coords3: Vector3 = grid_map.local_to_map(ray.get_collision_point() - (ray.get_collision_normal() * 0.1))
+			grid_map.update_selection(coords3 / 2)
 			var x = int(floor(float(coords3.x) / 2.0))
 			var z = int(floor(float(coords3.z) / 2.0))
 			var coords2: Vector2i = Vector2i(x, z)
-
 			if Input.is_action_just_pressed(input_click):
 				AudioManager.play_3d_sfx(AudioManager.EFFECTS, AudioManager.CLICK_SOUND, coords3)
 				GameEvents.player_send_mine_signal.emit(coords2)
