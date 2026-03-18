@@ -8,7 +8,8 @@ func _ready() -> void:
 	var game_save_file: FileAccess = FileAccess.open(GAME_SAVE_FILE, FileAccess.READ)
 	if game_save_file:
 		restore_levels(game_save_file)
-		restore_audio(game_save_file)
+		if not game_save_file.eof_reached():
+			restore_audio(game_save_file)
 
 	var best_times_file: FileAccess = FileAccess.open(BEST_TIMES_FILE, FileAccess.READ)
 	if best_times_file:

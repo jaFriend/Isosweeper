@@ -68,7 +68,7 @@ func _ready() -> void:
 	time_started = Time.get_ticks_msec()
 
 func _generate_3d_grid() -> void:
-	tiles_grid_map.cell_scale *= 0.98
+	tiles_grid_map.cell_scale *= 0.995
 	tiles_collision.position = Vector3(self.width, 0, self.height)
 	tiles_collision.shape.size = Vector3(self.width * 2, 2, self.height * 2)
 	for x in range(self.width):

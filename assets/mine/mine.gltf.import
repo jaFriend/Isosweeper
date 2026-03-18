@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b2b7t567hlgln"
-path="res://.godot/imported/flag.gltf-9dc6aa99c0e7b28298e0ecc0a1f6e8c8.scn"
+uid="uid://cv82yxxyh5tng"
+path="res://.godot/imported/mine.gltf-a6d9767542c8bfb33d3d5b74a570bce4.scn"
 
 [deps]
 
-source_file="res://assets/flag/flag.gltf"
-dest_files=["res://.godot/imported/flag.gltf-9dc6aa99c0e7b28298e0ecc0a1f6e8c8.scn"]
+source_file="res://assets/mine/mine.gltf"
+dest_files=["res://.godot/imported/mine.gltf-a6d9767542c8bfb33d3d5b74a570bce4.scn"]
 
 [params]
 

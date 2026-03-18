@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b12663c1twqib"
-path.s3tc="res://.godot/imported/flag_texture.png-d8730b15cb7203c78e91a4f52adb4346.s3tc.ctex"
+uid="uid://s3qt2uvvtseg"
+path.s3tc="res://.godot/imported/Ground103_1K-JPG_NormalGL.jpg-7ba04a2f510915b4a6272d595badb7ac.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/flag/flag_texture.png"
-dest_files=["res://.godot/imported/flag_texture.png-d8730b15cb7203c78e91a4f52adb4346.s3tc.ctex"]
+source_file="res://assets/block/Ground103_1K-JPG_NormalGL.jpg"
+dest_files=["res://.godot/imported/Ground103_1K-JPG_NormalGL.jpg-7ba04a2f510915b4a6272d595badb7ac.s3tc.ctex"]
 
 [params]
 
@@ -22,12 +22,12 @@ compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=1
+roughness/src_normal="res://assets/block/Ground103_1K-JPG_NormalGL.jpg"
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2
