@@ -52,5 +52,11 @@ func save_audio(save_file: FileAccess):
 		save_file.store_float(AudioServer.get_bus_volume_linear(i))
 
 func delete_save() -> void:
-	DirAccess.remove_absolute(GAME_SAVE_FILE)
-	DirAccess.remove_absolute(BEST_TIMES_FILE)
+	var err = DirAccess.remove_absolute(GAME_SAVE_FILE)
+	if err != OK:
+		print("Error removing file: ", error_string(err))
+	err = DirAccess.remove_absolute(BEST_TIMES_FILE)
+	if err != OK:
+		print("Error removing file: ", error_string(err))
+	LevelManager.completed_levels = 0
+	LevelManager.levels_time.clear()

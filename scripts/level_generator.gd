@@ -18,16 +18,27 @@ Level Generator Script:
 func _run() -> void:
 	var levels: Array[LevelInfo]
 	var filename: String = "levels.dat"
-	add_one_level(levels, create_level_info(10, 10, 5, false))
+
+	add_one_level(levels, create_level_info(8, 8, 3, false))
+	
 	multi_add_levels_by_range(levels, 
-							  LevelRequirements.new(10, 10, 10),
-							
-							  LevelRequirements.new(64, 64, 500), 99, 45)
+		LevelRequirements.new(8, 8, 6), 
+		LevelRequirements.new(12, 12, 20), 29, 10)
+
 	multi_add_levels_by_range(levels, 
-							  LevelRequirements.new(64, 64, 900), 
-							  LevelRequirements.new(256, 256, 12000), 100, 45)
+		LevelRequirements.new(13, 13, 25), 
+		LevelRequirements.new(24, 24, 90), 50, 20)
+
+	multi_add_levels_by_range(levels, 
+		LevelRequirements.new(25, 25, 100), 
+		LevelRequirements.new(48, 48, 460), 70, 30)
+
+	multi_add_levels_by_range(levels, 
+		LevelRequirements.new(50, 50, 525), 
+		LevelRequirements.new(100, 100, 2500), 50, 0)
+	
 	save_levels_data(levels, filename)
-	print("Generated Levels")
+	print("Successfully generated 200 levels")
 
 """
 Work to open the saved data back into LevelInfo.

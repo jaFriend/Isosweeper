@@ -1,6 +1,6 @@
 extends Control
 
-@onready var container: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer
+@onready var container: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer2
 @export var audio_bus_card: PackedScene = preload("res://scenes/audio/audio_bus_card.tscn")
 
 func _ready() -> void:
@@ -16,3 +16,7 @@ func render_audio_bus_options() -> void:
 
 func _on_back_button_pressed() -> void:
 	SceneManager.transition(SceneManager.SCENES.MAIN_MENU)
+
+
+func _on_delete_data_button_pressed() -> void:
+	SaveManager.delete_save()

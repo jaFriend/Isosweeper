@@ -32,6 +32,10 @@ SaveManager="*uid://dokl02esu1ayo"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/levelExport/plugin.cfg")
+
 [global_group]
 
 tiles_grid_map=""
