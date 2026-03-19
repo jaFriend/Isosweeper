@@ -10,6 +10,8 @@ func _ready() -> void:
 		restore_levels(game_save_file)
 		if not game_save_file.eof_reached():
 			restore_audio(game_save_file)
+		if not game_save_file.eof_reached():
+			restore_window_mode(game_save_file)
 
 	var best_times_file: FileAccess = FileAccess.open(BEST_TIMES_FILE, FileAccess.READ)
 	if best_times_file:
@@ -28,6 +30,7 @@ func _handle_exit_save():
 	if game_save_file:
 		save_levels(game_save_file)
 		save_audio(game_save_file)
+		save_window_mode(game_save_file)
 		
 	var best_times_file: FileAccess = FileAccess.open(BEST_TIMES_FILE, FileAccess.WRITE)
 	var best_times_buffer: PackedByteArray = var_to_bytes_with_objects(LevelManager.levels_time)
@@ -50,6 +53,13 @@ func save_audio(save_file: FileAccess):
 	save_file.store_64(LevelManager.completed_levels)
 	for i in range(AudioServer.bus_count):
 		save_file.store_float(AudioServer.get_bus_volume_linear(i))
+
+func restore_window_mode(save_file: FileAccess):
+	var window_mode: int = save_file.get_64()
+	DisplayServer.window_set_mode(window_mode)
+
+func save_window_mode(save_file: FileAccess):
+	save_file.store_64(DisplayServer.window_get_mode())
 
 func delete_save() -> void:
 	var err = DirAccess.remove_absolute(GAME_SAVE_FILE)

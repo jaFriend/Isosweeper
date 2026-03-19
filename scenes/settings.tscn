@@ -116,6 +116,18 @@ text = "Game Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="WindowedModeOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer3" unique_id=1667989590]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+alignment = 1
+item_count = 3
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Fullscreen"
+popup/item_1/id = 1
+popup/item_2/text = "Exclusive Fullscreen"
+popup/item_2/id = 2
+
 [node name="DeleteDataButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer3" unique_id=1582417823]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
@@ -140,5 +152,6 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Back"
 
+[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer3/WindowedModeOptionButton" to="." method="_on_windowed_mode_option_button_item_selected"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer3/DeleteDataButton" to="." method="_on_delete_data_button_pressed"]
 [connection signal="pressed" from="MarginContainer/BackButton" to="." method="_on_back_button_pressed"]
