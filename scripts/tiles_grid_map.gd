@@ -14,10 +14,10 @@ func create_highlight_instance() -> void:
 	mat.albedo_color = Color(1, 0, 0, 1)
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	
-	var s := cell_size *2
+	var s := cell_size * 2
 	var w := s.x * 0.5
 	var d := s.z * 0.5
-	var t := 0.05
+	var t := 0.03
 	
 	var borders = [
 		[Vector3(0, 0, d),  Vector3(s.x, 0.05, t)],
@@ -33,8 +33,6 @@ func create_highlight_instance() -> void:
 		b.position = border[0]
 		b.scale = border[1]
 		highlight_node.add_child(b)
-	
-	highlight_node.visible = false
 
 func update_selection(map_pos: Vector3i) -> void:
 	if highlight_node == null:
@@ -43,6 +41,3 @@ func update_selection(map_pos: Vector3i) -> void:
 	if get_cell_item(map_pos) != INVALID_CELL_ITEM:
 		var local_center = map_to_local(map_pos)
 		highlight_node.global_position = to_global(local_center) + Vector3(0, 1, 0)
-		highlight_node.visible = true
-	else:
-		highlight_node.visible = false

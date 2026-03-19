@@ -73,7 +73,7 @@ func _generate_3d_grid() -> void:
 	tiles_collision.shape.size = Vector3(self.width * 2, 2, self.height * 2)
 	for x in range(self.width):
 		for y in range(self.height):
-			tiles_grid_map.set_cell_item(Vector3i(x, 0, y), self.tile_hidden, 0)
+			tiles_grid_map.set_cell_item(Vector3i(x, 0, y), self.tile_hidden, grid_level.rng.randi_range(0,23))
 
 func _mine_grid(pos: Vector2i):
 	var grid_pos: Vector2i = Vector2i(pos.x, pos.y)
@@ -84,15 +84,15 @@ func _flag_grid(pos: Vector2i):
 	grid_level.flag(grid_pos)
 
 func _flag_cell(pos: Vector2i, flag: bool):
-
+	var flag_pos: Array = [0, 10, 16, 22]
 	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
 	if flag:
-		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_revealed, 10)
+		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_revealed, flag_pos[grid_level.rng.randf_range(0, flag_pos.size())])
 		self.mines_left -= 1
 		if self.mines_left >= 0:
 			level_ui.mines_left_value(self.mines_left)
 	else:
-		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_hidden, 10)
+		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_hidden, 0)
 		self.mines_left += 1
 		if self.mines_left >= 0:
 			level_ui.mines_left_value(self.mines_left)
@@ -102,7 +102,7 @@ func _reveal_cell(pos: Vector2i):
 	self.cells_shown += 1
 
 	self.numbers_grid_map.set_cell_item(grid_map_pos, self.grid_level.grid[pos.x][pos.y].mines - 1, 12)
-	self.tiles_grid_map.set_cell_item(grid_map_pos, self.tile_revealed, 0)
+	self.tiles_grid_map.set_cell_item(grid_map_pos, self.tile_revealed, grid_level.rng.randi_range(0,23))
 
 	level_ui.tiles_left_value(cells_left - cells_shown)
 	
