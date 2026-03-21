@@ -8,20 +8,30 @@
 		{
 			"name":"Scene",
 			"nodes":[
-				0
+				0,
+				1
 			]
 		}
 	],
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Cube"
+			"name":"Dirt",
+			"translation":[
+				1,
+				0,
+				0
+			]
+		},
+		{
+			"mesh":1,
+			"name":"Grass"
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"Material",
+			"name":"Material.002",
 			"normalTexture":{
 				"index":0,
 				"scale":3
@@ -33,6 +43,23 @@
 				"metallicFactor":0,
 				"metallicRoughnessTexture":{
 					"index":2
+				}
+			}
+		},
+		{
+			"doubleSided":true,
+			"name":"Material.003",
+			"normalTexture":{
+				"index":3,
+				"scale":5
+			},
+			"pbrMetallicRoughness":{
+				"baseColorTexture":{
+					"index":4
+				},
+				"metallicFactor":0,
+				"metallicRoughnessTexture":{
+					"index":5
 				}
 			}
 		}
@@ -51,6 +78,20 @@
 					"material":0
 				}
 			]
+		},
+		{
+			"name":"Cube.002",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":4,
+						"NORMAL":5,
+						"TEXCOORD_0":6
+					},
+					"indices":3,
+					"material":1
+				}
+			]
 		}
 	],
 	"textures":[
@@ -65,9 +106,36 @@
 		{
 			"sampler":0,
 			"source":2
+		},
+		{
+			"sampler":0,
+			"source":3
+		},
+		{
+			"sampler":0,
+			"source":4
+		},
+		{
+			"sampler":0,
+			"source":5
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/jpeg",
+			"name":"Ground103_1K-JPG_NormalGL",
+			"uri":"Ground103_1K-JPG_NormalGL.jpg"
+		},
+		{
+			"mimeType":"image/jpeg",
+			"name":"Ground103_1K-JPG_Color",
+			"uri":"Ground103_1K-JPG_Color.jpg"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"Ground103_1K-JPG_Roughness",
+			"uri":"Ground103_1K-JPG_Roughness.png"
+		},
 		{
 			"mimeType":"image/jpeg",
 			"name":"Grass005_1K-JPG_NormalGL",
@@ -118,6 +186,34 @@
 			"componentType":5123,
 			"count":564,
 			"type":"SCALAR"
+		},
+		{
+			"bufferView":4,
+			"componentType":5126,
+			"count":384,
+			"max":[
+				0.5,
+				0.5,
+				0.5
+			],
+			"min":[
+				-0.5,
+				-0.5,
+				-0.5
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":5,
+			"componentType":5126,
+			"count":384,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":6,
+			"componentType":5126,
+			"count":384,
+			"type":"VEC2"
 		}
 	],
 	"bufferViews":[
@@ -144,6 +240,24 @@
 			"byteLength":1128,
 			"byteOffset":12288,
 			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":4608,
+			"byteOffset":13416,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":4608,
+			"byteOffset":18024,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":3072,
+			"byteOffset":22632,
+			"target":34962
 		}
 	],
 	"samplers":[
@@ -154,7 +268,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":13416,
+			"byteLength":25704,
 			"uri":"block.bin"
 		}
 	]

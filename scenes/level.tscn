@@ -8,6 +8,7 @@
 [ext_resource type="MeshLibrary" uid="uid://bjunplhftxyox" path="res://assets/tiles.tres" id="5_ppgk2"]
 [ext_resource type="MeshLibrary" uid="uid://cp437pmff8gfa" path="res://assets/flags.tres" id="6_2r41h"]
 [ext_resource type="Script" uid="uid://dbcfkqtxw66lr" path="res://scripts/tiles_grid_map.gd" id="7_b121j"]
+[ext_resource type="MeshLibrary" uid="uid://c3cfk88a46gvc" path="res://assets/mines.tres" id="9_8c41q"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -108,6 +109,10 @@ metadata/_editor_floor_ = Vector3(0, 0, 0)
 [node name="FlagsGridMap" type="GridMap" parent="." unique_id=2102483366]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 mesh_library = ExtResource("6_2r41h")
+
+[node name="MinesGridMap" type="GridMap" parent="." unique_id=1530414881]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh_library = ExtResource("9_8c41q")
 
 [node name="TilesBody" type="StaticBody3D" parent="." unique_id=991038612]
 collision_layer = 3
