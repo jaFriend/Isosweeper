@@ -1,11 +1,11 @@
 [gd_resource type="MeshLibrary" format=4 uid="uid://bjunplhftxyox"]
 
-[ext_resource type="Texture2D" uid="uid://bmrjak12hhri8" path="res://assets/block/Grass005_1K-JPG_Color.jpg" id="1_qert4"]
-[ext_resource type="Texture2D" uid="uid://cbc2svoy6fkcm" path="res://assets/block/Grass005_1K-JPG_Roughness.png" id="2_wpnlw"]
-[ext_resource type="Texture2D" uid="uid://dc1swal1y1eg" path="res://assets/block/Grass005_1K-JPG_NormalGL.jpg" id="3_sw6k1"]
-[ext_resource type="Texture2D" uid="uid://olded2qih3if" path="res://assets/block/Ground103_1K-JPG_Color.jpg" id="4_ximhw"]
-[ext_resource type="Texture2D" uid="uid://dl8raevp7w5cw" path="res://assets/block/Ground103_1K-JPG_Roughness.png" id="5_48mom"]
-[ext_resource type="Texture2D" uid="uid://s3qt2uvvtseg" path="res://assets/block/Ground103_1K-JPG_NormalGL.jpg" id="6_s31pr"]
+[ext_resource type="Texture2D" path="res://assets/block/Grass005_1K-JPG_Color.jpg" id="1_qert4"]
+[ext_resource type="Texture2D" path="res://assets/block/Grass005_1K-JPG_Roughness.png" id="2_wpnlw"]
+[ext_resource type="Texture2D" path="res://assets/block/Grass005_1K-JPG_NormalGL.jpg" id="3_sw6k1"]
+[ext_resource type="Texture2D" path="res://assets/block/Ground103_1K-JPG_Color.jpg" id="4_ximhw"]
+[ext_resource type="Texture2D" path="res://assets/block/Ground103_1K-JPG_Roughness.png" id="5_48mom"]
+[ext_resource type="Texture2D" path="res://assets/block/Ground103_1K-JPG_NormalGL.jpg" id="6_s31pr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dsqm"]
 resource_name = "Material"
