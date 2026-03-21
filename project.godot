@@ -34,7 +34,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/levelExport/plugin.cfg")
+enabled=PackedStringArray()
 
 [global_group]
 
