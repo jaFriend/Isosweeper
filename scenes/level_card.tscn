@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://smworymht1sv"]
+
+[ext_resource type="Script" uid="uid://crmf5784t1sbb" path="res://scripts/level_card.gd" id="1_dw25j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dw25j"]
+bg_color = Color(0.42352942, 0.6509804, 0.31764707, 1)
+
+[node name="LevelCard" type="PanelContainer" unique_id=1420080784]
+custom_minimum_size = Vector2(350, 150)
+theme_override_styles/panel = SubResource("StyleBoxFlat_dw25j")
+script = ExtResource("1_dw25j")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=748027295]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1968700811]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1424442173]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Level" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2066914278]
+layout_mode = 2
+text = "Level: 1000"
+
+[node name="Grid" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=720584263]
+layout_mode = 2
+text = "Grid: 1000x1000"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=269333495]
+layout_mode = 2
+
+[node name="Safety" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=898677179]
+layout_mode = 2
+text = "Safety: Yes"
+
+[node name="Mines" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=349518964]
+layout_mode = 2
+text = "Mines: 1000"
+
+[node name="BestTime" type="Label" parent="MarginContainer/VBoxContainer" unique_id=90803519]
+visible = false
+layout_mode = 2
+text = "Best: 999:59"
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1237410050]
+layout_mode = 2
+text = "Play Level"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

@@ -62,14 +62,19 @@ func _ready() -> void:
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
+	GameEvents.is_mouse_captured.connect(_mouse_captured_state)
+	_mouse_captured_state(true)
+
 	selected_coord = Vector2i(-1,-1)
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
+	"""
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
+	"""
 	
 	# Look around
 	if mouse_captured and event is InputEventMouseMotion:
@@ -108,7 +113,7 @@ func _physics_process(delta: float) -> void:
 		move_speed = base_speed
 
 	# Apply desired movement to velocity
-	if can_move:
+	if can_move and mouse_captured:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if move_dir:
@@ -126,17 +131,21 @@ func _physics_process(delta: float) -> void:
 	var ray = $Head/Camera3D/RayCast3D
 	if ray.is_colliding():
 		var ray_collider = ray.get_collider()
-		if ray_collider.has_method("get_tile_coordinates"):
-			var coords: Vector2i = ray_collider.get_tile_coordinates()
-			
-			selected_coord = coords
+
+		if ray_collider and mouse_captured:
+			var grid_map = get_node("../TilesGridMap")
+
+			var coords3: Vector3 = grid_map.local_to_map(ray.get_collision_point() - (ray.get_collision_normal() * 0.1))
+			grid_map.update_selection(coords3 / 2)
+			var x = int(floor(float(coords3.x) / 2.0))
+			var z = int(floor(float(coords3.z) / 2.0))
+			var coords2: Vector2i = Vector2i(x, z)
 			if Input.is_action_just_pressed(input_click):
-				GameEvents.player_send_mine_signal.emit(coords)
+				AudioManager.play_3d_sfx(AudioManager.EFFECTS, AudioManager.CLICK_SOUND, coords3)
+				GameEvents.player_send_mine_signal.emit(coords2)
 			if Input.is_action_just_pressed(input_second_click):
-				GameEvents.player_send_flag_signal.emit(coords)
-			#print("Looking at Tile: ", coords)
-
-
+				AudioManager.play_3d_sfx(AudioManager.EFFECTS, AudioManager.CLICK_SOUND, coords3)
+				GameEvents.player_send_flag_signal.emit(coords2)
 
 ## Rotate us to look around.
 ## Base of controller rotates around y (left/right). Head rotates around x (up/down).
@@ -160,15 +169,16 @@ func disable_freefly():
 	collider.disabled = false
 	freeflying = false
 
-
-func capture_mouse():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	mouse_captured = true
-
-
-func release_mouse():
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	mouse_captured = false
+func _mouse_captured_state(captured: bool) -> void:
+	if captured:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		mouse_captured = true
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		mouse_captured = false
+		velocity.x = 0
+		velocity.y = 0
+		velocity.z = 0
 
 
 ## Checks if some Input Actions haven't been created.

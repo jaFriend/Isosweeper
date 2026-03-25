@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://e26n3osqq4gh"]
+
+[ext_resource type="Script" uid="uid://d1l6tnwfngyp6" path="res://scripts/level.gd" id="1_w7c3h"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="2_w8frs"]
+[ext_resource type="PackedScene" uid="uid://gfgil1qpr2oo" path="res://scenes/level_ui.tscn" id="3_klq6b"]
+[ext_resource type="PackedScene" uid="uid://cygjdgyxfrwka" path="res://scenes/level_pause_menu.tscn" id="3_w8frs"]
+[ext_resource type="MeshLibrary" uid="uid://bfrx7fhioyk5f" path="res://assets/numbers.tres" id="4_mx8sn"]
+[ext_resource type="MeshLibrary" uid="uid://bjunplhftxyox" path="res://assets/tiles.tres" id="5_ppgk2"]
+[ext_resource type="MeshLibrary" uid="uid://cp437pmff8gfa" path="res://assets/flags.tres" id="6_2r41h"]
+[ext_resource type="Script" uid="uid://dbcfkqtxw66lr" path="res://scripts/tiles_grid_map.gd" id="7_b121j"]
+[ext_resource type="MeshLibrary" uid="uid://c3cfk88a46gvc" path="res://assets/mines.tres" id="9_8c41q"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_3wf17"]
+sky_material = SubResource("ProceduralSkyMaterial_c40o3")
+
+[sub_resource type="Environment" id="Environment_o52t6"]
+background_mode = 2
+sky = SubResource("Sky_3wf17")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_w8frs"]
+font_size = 192
+font_color = Color(1, 0, 0, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3wf17"]
+font_size = 192
+font_color = Color(0, 0.735357, 0, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2r41h"]
+
+[node name="Level" type="Node3D" unique_id=1223777596]
+script = ExtResource("1_w7c3h")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1800104595]
+environment = SubResource("Environment_o52t6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2033883832]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="ProtoController" parent="." unique_id=1334512796 instance=ExtResource("2_w8frs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.39070785, 0.44144678, 0.29740405)
+can_sprint = true
+can_freefly = true
+
+[node name="Defeat" type="Label" parent="." unique_id=1041158382]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -431.5
+offset_top = -174.5
+offset_right = 431.5
+offset_bottom = 174.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "DEFEAT"
+label_settings = SubResource("LabelSettings_w8frs")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Victory" type="Label" parent="." unique_id=12295941]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -431.5
+offset_top = -174.5
+offset_right = 431.5
+offset_bottom = 174.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "VICTORY"
+label_settings = SubResource("LabelSettings_3wf17")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelUI" parent="." unique_id=587057653 instance=ExtResource("3_klq6b")]
+
+[node name="LevelPauseMenu" parent="." unique_id=1526420097 instance=ExtResource("3_w8frs")]
+visible = false
+
+[node name="NumbersGridMap" type="GridMap" parent="." unique_id=237946052]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -0.5, 0)
+mesh_library = ExtResource("4_mx8sn")
+cell_size = Vector3(1, 1, 1)
+
+[node name="TilesGridMap" type="GridMap" parent="." unique_id=758209992 groups=["tiles_grid_map"]]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1.5, 0)
+mesh_library = ExtResource("5_ppgk2")
+cell_size = Vector3(1, 1, 1)
+collision_layer = 3
+script = ExtResource("7_b121j")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="FlagsGridMap" type="GridMap" parent="." unique_id=2102483366]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh_library = ExtResource("6_2r41h")
+
+[node name="MinesGridMap" type="GridMap" parent="." unique_id=1530414881]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh_library = ExtResource("9_8c41q")
+
+[node name="TilesBody" type="StaticBody3D" parent="." unique_id=991038612]
+collision_layer = 3
+
+[node name="TilesCollision" type="CollisionShape3D" parent="TilesBody" unique_id=267098020]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+shape = SubResource("BoxShape3D_2r41h")
+debug_color = Color(1.7327071e-05, 0.8094265, 0.9439877, 0.41960785)

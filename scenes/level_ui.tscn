@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://gfgil1qpr2oo"]
+
+[ext_resource type="Script" uid="uid://bxk0rgjyyih7b" path="res://scripts/level_ui.gd" id="1_exbfu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2r41h"]
+border_width_bottom = 3
+border_color = Color(0.34901962, 0.34901962, 0.34901962, 1)
+
+[node name="LevelUI" type="Control" unique_id=587057653]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+script = ExtResource("1_exbfu")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1775091328]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2r41h")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1310275622]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer" unique_id=646125579]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Mines_text" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1855329225]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+theme_override_font_sizes/font_size = 18
+text = "MINES:"
+
+[node name="Mines" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=156404078]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+theme_override_font_sizes/font_size = 18
+text = "000"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=43180085]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="MinesLeft_text" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1371453834]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+theme_override_font_sizes/font_size = 18
+text = "MINES LEFT:"
+
+[node name="MinesLeft" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1372215152]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+theme_override_font_sizes/font_size = 18
+text = "000"
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=543113932]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="TilesLeft_text" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1062614918]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24780053, 0.24780053, 0.24780053, 1)
+theme_override_font_sizes/font_size = 18
+text = "TILES LEFT:"
+
+[node name="TilesLeft" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=395246448]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3491902, 0.3491902, 0.3491902, 1)
+theme_override_font_sizes/font_size = 18
+text = "000"
+horizontal_alignment = 1

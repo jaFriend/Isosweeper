@@ -1,94 +1,148 @@
 extends Node
 
-@export var width: int = 4
-@export var height: int = 4
-@export var mines: int = 1
-@export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
+@onready var numbers_grid_map: GridMap = $NumbersGridMap
+@onready var tiles_grid_map: GridMap = $TilesGridMap
+@onready var flags_grid_map: GridMap = $FlagsGridMap
+@onready var tiles_collision: CollisionShape3D = $TilesBody/TilesCollision
+@onready var level_pause_menu = $LevelPauseMenu
+@onready var proto_controller = $ProtoController
+@onready var level_ui = $LevelUI
+@onready var victory_label: Node = $Victory
+@onready var defeat_label: Node = $Defeat
+
+var pause_menu_state: bool = false:
+	set(value):
+		pause_menu_state = value
+		_update_pause_menu_state()
+
+var width: int = 4
+var height: int = 4
+var mines: int = 1
+var pre_generate: bool = false
+var time_started: int
+
 var grid_level: Grid
-var tiles_map: Dictionary
 
 var cells_shown: int
 var cells_left: int
 var mines_left: int
 
+var tile_hidden: int
+var tile_revealed: int
+
+var flag_hidden: int = -1
+var flag_revealed: int
+
+func load_level() -> void:
+	var level_info: LevelInfo = LevelManager.get_level()
+	self.width = level_info.x
+	self.height = level_info.y
+	self.mines = level_info.mines
+	self.pre_generate = level_info.pre_generate
+
 func _ready() -> void:
-	var start_time: int = Time.get_ticks_usec()
-	#var level: Grid = Grid.new(30, 16, 99)
-	var pre_generate: bool = false
+	AudioManager.pause_audio_bus(AudioManager.MUSIC)
+
+	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
-	var end_time: int = Time.get_ticks_usec()
-	var total_time_usec: int = end_time - start_time
-	var total_time_msec: float = total_time_usec / 1000.0
-	print("--- Grid Generation Profile ---")
-	print("Total Cells: ", self.width * self.height)
-	print("Execution Time: %d μs (%.3f ms)" % [total_time_usec, total_time_msec])
-	tiles_map = {}
 	_generate_3d_grid()
-	
-	print("Generated grid")
-	
+	proto_controller.position = Vector3(self.width, 1, self.height)
+
 	GameEvents.player_send_mine_signal.connect(_mine_grid)
 	GameEvents.player_send_flag_signal.connect(_flag_grid)
-	grid_level.reveal_cell.connect(_reveal_cell)
-	grid_level.flag_cell.connect(_flag_cell)
+	self.grid_level.reveal_cell.connect(_reveal_cell)
+	self.grid_level.flag_cell.connect(_flag_cell)
+	self.grid_level.game_over.connect(_on_defeat)
+	self.level_pause_menu.resume_pressed.connect(_resume_game)
+	self.level_pause_menu.exit_pressed.connect(_exit_game)
+	
+	self.tile_hidden = 0
+	self.tile_revealed = 1
+	self.flag_revealed = 0
+	
+	self.cells_shown = 0
+	self.cells_left = width * height - mines
+	self.mines_left = mines
+	level_ui.setup_ui(self.mines, self.mines_left, self.cells_left)
 
-	cells_shown = 0
-	cells_left = width * height - mines
-	mines_left = mines
-	var mines_label = get_node("../LevelUI/Mines")
-	var mines_left_label = get_node("../LevelUI/MinesLeft")
-	var tiles_left_label = get_node("../LevelUI/TilesLeft")
-	tiles_left_label.text = str(cells_left)
-	mines_label.text = str(mines)
-	mines_left_label.text = str(mines_left)
-
-	print("cells_left: %d" % [cells_left])
-
+	time_started = Time.get_ticks_msec()
 
 func _generate_3d_grid() -> void:
-	for x in range(width):
-		for y in range(height):
-			var tile = tile_scene.instantiate()
-			var tile_size: float = 2
-			var gap_size: float = 0.05
-			add_child(tile)
-			tile.scale = Vector3(tile_size - gap_size, 1, tile_size - gap_size)
-			tile.position = Vector3(tile_size * (x - width / 2 + 1) , 0, tile_size * (y - height / 2 + 1))
-			var pos: Vector2i = Vector2i(x,y)
-			tile.setup(pos)
-
-			tiles_map[pos] = tile
+	tiles_grid_map.cell_scale *= 0.995
+	tiles_collision.position = Vector3(self.width, 0, self.height)
+	tiles_collision.shape.size = Vector3(self.width * 2, 2, self.height * 2)
+	for x in range(self.width):
+		for y in range(self.height):
+			tiles_grid_map.set_cell_item(Vector3i(x, 0, y), self.tile_hidden, grid_level.rng.randi_range(0,23))
 
 func _mine_grid(pos: Vector2i):
-	grid_level.mine(pos)
-	
+	var grid_pos: Vector2i = Vector2i(pos.x, pos.y)
+	grid_level.mine(grid_pos, get_tree())
+
 func _flag_grid(pos: Vector2i):
-	grid_level.flag(pos)
+	var grid_pos: Vector2i = Vector2i(pos.x, pos.y)
+	grid_level.flag(grid_pos)
 
 func _flag_cell(pos: Vector2i, flag: bool):
-	var tiles_left_label = get_node("../LevelUI/MinesLeft")
+	var flag_pos: Array = [0, 10, 16, 22]
+	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
 	if flag:
-		mines_left -= 1
-		if mines_left >= 0:
-			tiles_left_label.text = str(mines_left)
+		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_revealed, flag_pos[grid_level.rng.randf_range(0, flag_pos.size())])
+		self.mines_left -= 1
+		if self.mines_left >= 0:
+			level_ui.mines_left_value(self.mines_left)
 	else:
-		mines_left += 1
-		if mines_left >= 0:
-			tiles_left_label.text = str(mines_left)
-	tiles_map[pos]._flag(flag)
+		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_hidden, 0)
+		self.mines_left += 1
+		if self.mines_left >= 0:
+			level_ui.mines_left_value(self.mines_left)
 
 func _reveal_cell(pos: Vector2i):
-	cells_shown += 1
-	print("mines: %d" % [cells_shown])
-	var adj_mine_value: Cell = grid_level._get_cell(pos)
-	tiles_map[pos].set_mine_value(grid_level.grid[pos.x][pos.y].mines)
-	tiles_map[pos]._reveal()
+	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
+	self.cells_shown += 1
 
-	var tiles_left_label = get_node("../LevelUI/TilesLeft")
-	tiles_left_label.text = str(cells_left - cells_shown)
+	self.numbers_grid_map.set_cell_item(grid_map_pos, self.grid_level.grid[pos.x][pos.y].mines - 1, 12)
+	self.tiles_grid_map.set_cell_item(grid_map_pos, self.tile_revealed, grid_level.rng.randi_range(0,23))
+
+	level_ui.tiles_left_value(cells_left - cells_shown)
 	
 	if cells_shown == cells_left:
-		var victory_label: Node = get_node("../Victory")
-		victory_label.visible = true
+		var time: int = (Time.get_ticks_msec() - time_started) / 1000
+		self._on_win(time)
 
-		print("Victory")
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("pause_button"):
+		self.pause_menu_state = not self.pause_menu_state
+
+func _on_win(time :int) -> void:
+	LevelManager.win(time)
+	GameEvents.is_mouse_captured.emit(false)
+	victory_label.visible = true
+	await get_tree().create_timer(2.0).timeout
+	_exit_game()
+
+func _on_defeat() -> void:
+	LevelManager.lose()
+	GameEvents.is_mouse_captured.emit(false)
+	defeat_label.visible = true
+	await get_tree().create_timer(2.0).timeout
+	_exit_game()
+
+func _exit_game() -> void:
+	if LevelManager.idx == -1:
+		SceneManager.transition_deferred(SceneManager.SCENES.CUSTOM_LEVEL_MENU)
+	else:
+		SceneManager.transition_deferred(SceneManager.SCENES.LEVEL_MENU)
+
+func _resume_game() -> void:
+	self.pause_menu_state = false
+
+func _update_pause_menu_state() -> void:
+	if self.pause_menu_state:
+		AudioManager.play_audio_bus(AudioManager.MUSIC)
+		GameEvents.is_mouse_captured.emit(false)
+		self.level_pause_menu.visible = true
+	else:
+		AudioManager.pause_audio_bus(AudioManager.MUSIC)
+		GameEvents.is_mouse_captured.emit(true)
+		self.level_pause_menu.visible = false

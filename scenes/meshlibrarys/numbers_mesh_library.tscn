@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://dvo7m64dafnmi"]
+
+[ext_resource type="Material" uid="uid://c2y581p1j3742" path="res://assets/number1.tres" id="1_wxqc4"]
+[ext_resource type="Material" uid="uid://do7g4efjbdqkr" path="res://assets/number2.tres" id="2_m8win"]
+[ext_resource type="Material" uid="uid://ccil0fe67atsb" path="res://assets/number3.tres" id="3_lpt33"]
+[ext_resource type="Material" uid="uid://besy2bsqv0t2k" path="res://assets/number4.tres" id="4_kx8r8"]
+[ext_resource type="Material" uid="uid://ch0l237gvmtl" path="res://assets/number5.tres" id="5_046jl"]
+[ext_resource type="Material" uid="uid://dqos5s3cbrwcg" path="res://assets/number6.tres" id="6_io4su"]
+[ext_resource type="Material" uid="uid://beybt8fm1xol7" path="res://assets/number7.tres" id="7_fdo6p"]
+[ext_resource type="Material" uid="uid://cotkag60uj7pg" path="res://assets/number8.tres" id="8_krh3h"]
+
+[sub_resource type="TextMesh" id="TextMesh_nfte0"]
+material = ExtResource("1_wxqc4")
+text = "1"
+font_size = 80
+
+[sub_resource type="TextMesh" id="TextMesh_ys1rk"]
+material = ExtResource("2_m8win")
+text = "2"
+font_size = 80
+
+[sub_resource type="TextMesh" id="TextMesh_1m6tj"]
+material = ExtResource("3_lpt33")
+text = "3"
+font_size = 80
+
+[sub_resource type="TextMesh" id="TextMesh_b7jfh"]
+material = ExtResource("4_kx8r8")
+text = "4"
+font_size = 80
+
+[sub_resource type="TextMesh" id="TextMesh_tj32k"]
+material = ExtResource("5_046jl")
+text = "5"
+font_size = 80
+
+[sub_resource type="TextMesh" id="TextMesh_xdn7p"]
+material = ExtResource("6_io4su")
+text = "6"
+font_size = 80
+
+[sub_resource type="TextMesh" id="TextMesh_nl1ft"]
+material = ExtResource("7_fdo6p")
+text = "7"
+font_size = 80
+
+[sub_resource type="TextMesh" id="TextMesh_wxqc4"]
+material = ExtResource("8_krh3h")
+text = "8"
+font_size = 80
+
+[node name="NumbersMeshLibrary" type="Node3D" unique_id=1122839553]
+
+[node name="Number1" type="MeshInstance3D" parent="." unique_id=1113944101]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("TextMesh_nfte0")
+
+[node name="Number2" type="MeshInstance3D" parent="." unique_id=1851642415]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.5, 0, 0)
+mesh = SubResource("TextMesh_ys1rk")
+
+[node name="Number3" type="MeshInstance3D" parent="." unique_id=662664972]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1, 0, 0)
+mesh = SubResource("TextMesh_1m6tj")
+
+[node name="Number4" type="MeshInstance3D" parent="." unique_id=1693552080]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.5, 0, 0)
+mesh = SubResource("TextMesh_b7jfh")
+
+[node name="Number5" type="MeshInstance3D" parent="." unique_id=879425599]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 2, 0, 0)
+mesh = SubResource("TextMesh_tj32k")
+
+[node name="Number6" type="MeshInstance3D" parent="." unique_id=1834736876]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 2.5, 0, 0)
+mesh = SubResource("TextMesh_xdn7p")
+
+[node name="Number7" type="MeshInstance3D" parent="." unique_id=1982554547]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3, 0, 0)
+mesh = SubResource("TextMesh_nl1ft")
+
+[node name="Number8" type="MeshInstance3D" parent="." unique_id=574026943]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.5, 0, 0)
+mesh = SubResource("TextMesh_wxqc4")

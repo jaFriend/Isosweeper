@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://cst8th2nv3fxa"]
+
+[ext_resource type="Script" uid="uid://k4imlmqknpci" path="res://scripts/level_menu.gd" id="1_yl4fo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rj3wb"]
+bg_color = Color(0.2509804, 0.31764707, 0.23137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yl4fo"]
+bg_color = Color(0.38431373, 0.5058824, 0.25490198, 1)
+
+[node name="LevelMenu" type="Control" unique_id=541501804]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yl4fo")
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1149927435]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rj3wb")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2126514881]
+custom_minimum_size = Vector2(400, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -300.0
+offset_right = 200.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yl4fo")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=767513432]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer" unique_id=1990573253]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer" unique_id=1401623052]
+clip_contents = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1711621766]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 35
+
+[node name="BackButton" type="Button" parent="MarginContainer" unique_id=924308261]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="MarginContainer/BackButton" to="." method="_on_back_button_pressed"]

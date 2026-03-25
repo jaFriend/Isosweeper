@@ -11,17 +11,34 @@ config_version=5
 [application]
 
 config/name="IsoSweeper"
-run/main_scene="uid://e26n3osqq4gh"
+run/main_scene="uid://mxatbfqxi0cy"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://bpnpud7fg15w6"
+
+[audio]
+
+buses/default_bus_layout="uid://jpwwaaleonpo"
 
 [autoload]
 
 GameEvents="*uid://beu8ecoywc04h"
+LevelManager="*uid://cmxwvvfqa78t1"
+SceneManager="*uid://befeu70kx1py8"
+AudioManager="*uid://crse8t6xjjwb0"
+SaveManager="*uid://dokl02esu1ayo"
+
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray()
+
+[global_group]
+
+tiles_grid_map=""
 
 [input]
 
@@ -70,6 +87,11 @@ input_second_selection={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(321, 9),"global_position":Vector2(330, 57),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
+pause_button={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
 
 [layer_names]
 
@@ -79,6 +101,7 @@ input_second_selection={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+jolt_physics_3d/limits/max_bodies=20000
 
 [rendering]
 
