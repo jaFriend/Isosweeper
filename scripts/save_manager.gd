@@ -45,12 +45,10 @@ func save_levels(save_file: FileAccess):
 	save_file.store_64(LevelManager.completed_levels)
 
 func restore_audio(save_file: FileAccess):
-	LevelManager.completed_levels = save_file.get_64()
 	for i in range(AudioServer.bus_count):
 		AudioServer.set_bus_volume_linear(i, save_file.get_float())
 
 func save_audio(save_file: FileAccess):
-	save_file.store_64(LevelManager.completed_levels)
 	for i in range(AudioServer.bus_count):
 		save_file.store_float(AudioServer.get_bus_volume_linear(i))
 
