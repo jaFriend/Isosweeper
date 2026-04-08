@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cyw5iy1lwdv66"
+path="res://.godot/imported/Footstep Snow 04.mp3-75b43e945ce5759864aaac7df74ca28f.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Footstep Snow 04.mp3"
+dest_files=["res://.godot/imported/Footstep Snow 04.mp3-75b43e945ce5759864aaac7df74ca28f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
