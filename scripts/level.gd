@@ -69,7 +69,7 @@ func _ready() -> void:
 
 func _generate_3d_grid() -> void:
 	tiles_grid_map.cell_scale *= 0.995
-	tiles_collision.position = Vector3(self.width, 0, self.height)
+	tiles_collision.position = Vector3(self.width, -0.5, self.height)
 	tiles_collision.shape.size = Vector3(self.width * 2, 2, self.height * 2)
 	for x in range(self.width):
 		for y in range(self.height):
