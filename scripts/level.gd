@@ -5,7 +5,6 @@ extends Node
 @onready var flags_grid_map: GridMap = $FlagsGridMap
 @onready var tiles_collision: CollisionShape3D = $TilesBody/TilesCollision
 @onready var level_pause_menu = $LevelPauseMenu
-@onready var proto_controller = $ProtoController
 @onready var level_ui = $LevelUI
 @onready var victory_label: Node = $Victory
 @onready var defeat_label: Node = $Defeat
@@ -32,6 +31,7 @@ var tile_revealed: int
 
 var flag_hidden: int = -1
 var flag_revealed: int
+var flag_nodes: Dictionary = {}
 
 func load_level() -> void:
 	var level_info: LevelInfo = LevelManager.get_level()
@@ -46,7 +46,7 @@ func _ready() -> void:
 	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
 	_generate_3d_grid()
-	proto_controller.position = Vector3(self.width, 1, self.height)
+	$CharacterBody3D.position = Vector3(self.width, 1, self.height)
 
 	GameEvents.player_send_mine_signal.connect(_mine_grid)
 	GameEvents.player_send_flag_signal.connect(_flag_grid)
@@ -69,7 +69,7 @@ func _ready() -> void:
 
 func _generate_3d_grid() -> void:
 	tiles_grid_map.cell_scale *= 0.995
-	tiles_collision.position = Vector3(self.width, 0, self.height)
+	tiles_collision.position = Vector3(self.width, -0.5, self.height)
 	tiles_collision.shape.size = Vector3(self.width * 2, 2, self.height * 2)
 	for x in range(self.width):
 		for y in range(self.height):
@@ -86,13 +86,39 @@ func _flag_grid(pos: Vector2i):
 func _flag_cell(pos: Vector2i, flag: bool):
 	var flag_pos: Array = [0, 10, 16, 22]
 	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
+ 
 	if flag:
-		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_revealed, flag_pos[grid_level.rng.randf_range(0, flag_pos.size())])
+		# CHANGED: Update mines_left UI immediately (before delay) so it feels responsive
 		self.mines_left -= 1
 		if self.mines_left >= 0:
 			level_ui.mines_left_value(self.mines_left)
+ 
+		# CHANGED: Delay flag appearance by 0.8s to sync with the wave animation
+		await get_tree().create_timer(0.8).timeout
+ 
+		# CHANGED: Spawn a real MeshInstance3D instead of setting a GridMap cell
+		var mesh_instance := MeshInstance3D.new()
+		mesh_instance.mesh = flags_grid_map.mesh_library.get_item_mesh(self.flag_revealed)
+		var local_pos := flags_grid_map.map_to_local(grid_map_pos)
+		add_child(mesh_instance)
+		mesh_instance.global_position = flags_grid_map.to_global(local_pos)
+		mesh_instance.scale = Vector3.ZERO
+ 
+		# CHANGED: Store the node so we can remove it when unflagging
+		flag_nodes[pos] = mesh_instance
+ 
+		# CHANGED: Tween scale from 0 to full size with elastic bounce feel
+		var tween := create_tween()
+		tween.tween_property(mesh_instance, "scale", Vector3.ONE, 1.5) \
+			.set_trans(Tween.TRANS_ELASTIC) \
+			.set_ease(Tween.EASE_OUT)
+ 
 	else:
-		self.flags_grid_map.set_cell_item(grid_map_pos, self.flag_hidden, 0)
+		# CHANGED: Remove the spawned MeshInstance3D instead of clearing a GridMap cell
+		if pos in flag_nodes:
+			flag_nodes[pos].queue_free()
+			flag_nodes.erase(pos)
+ 
 		self.mines_left += 1
 		if self.mines_left >= 0:
 			level_ui.mines_left_value(self.mines_left)
