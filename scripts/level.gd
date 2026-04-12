@@ -42,6 +42,7 @@ func load_level() -> void:
 
 func _ready() -> void:
 	AudioManager.pause_audio_bus(AudioManager.MUSIC)
+	GameEvents.mouse_captured_state(true)
 
 	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
@@ -94,7 +95,7 @@ func _flag_cell(pos: Vector2i, flag: bool):
 			level_ui.mines_left_value(self.mines_left)
  
 		# CHANGED: Delay flag appearance by 0.8s to sync with the wave animation
-		await get_tree().create_timer(0.8).timeout
+		await get_tree().create_timer(0.2).timeout
  
 		# CHANGED: Spawn a real MeshInstance3D instead of setting a GridMap cell
 		var mesh_instance := MeshInstance3D.new()
@@ -114,6 +115,7 @@ func _flag_cell(pos: Vector2i, flag: bool):
 			.set_ease(Tween.EASE_OUT)
  
 	else:
+		await get_tree().create_timer(0.2).timeout
 		# CHANGED: Remove the spawned MeshInstance3D instead of clearing a GridMap cell
 		if pos in flag_nodes:
 			flag_nodes[pos].queue_free()
@@ -142,14 +144,14 @@ func _process(delta: float) -> void:
 
 func _on_win(time :int) -> void:
 	LevelManager.win(time)
-	GameEvents.is_mouse_captured.emit(false)
+	GameEvents.mouse_captured_state(false)
 	victory_label.visible = true
 	await get_tree().create_timer(2.0).timeout
 	_exit_game()
 
 func _on_defeat() -> void:
 	LevelManager.lose()
-	GameEvents.is_mouse_captured.emit(false)
+	GameEvents.mouse_captured_state(false)
 	defeat_label.visible = true
 	await get_tree().create_timer(2.0).timeout
 	_exit_game()
@@ -166,9 +168,9 @@ func _resume_game() -> void:
 func _update_pause_menu_state() -> void:
 	if self.pause_menu_state:
 		AudioManager.play_audio_bus(AudioManager.MUSIC)
-		GameEvents.is_mouse_captured.emit(false)
+		GameEvents.mouse_captured_state(false)
 		self.level_pause_menu.visible = true
 	else:
 		AudioManager.pause_audio_bus(AudioManager.MUSIC)
-		GameEvents.is_mouse_captured.emit(true)
+		GameEvents.mouse_captured_state(true)
 		self.level_pause_menu.visible = false
