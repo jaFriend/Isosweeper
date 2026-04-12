@@ -8,6 +8,7 @@ extends Node
 @onready var level_ui = $LevelUI
 @onready var victory_label: Node = $Victory
 @onready var defeat_label: Node = $Defeat
+@export var character_scene_3d: PackedScene = preload("res://scenes/character_body_3d.tscn")
 
 var pause_menu_state: bool = false:
 	set(value):
@@ -47,7 +48,11 @@ func _ready() -> void:
 	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
 	_generate_3d_grid()
-	$CharacterBody3D.position = Vector3(self.width, 1, self.height)
+	
+	var character = character_scene_3d.instantiate()
+	add_child(character)
+	character.global_position = Vector3(width, 1, height)
+	character.scale = Vector3(0.5,0.5,0.5)
 
 	GameEvents.player_send_mine_signal.connect(_mine_grid)
 	GameEvents.player_send_flag_signal.connect(_flag_grid)
