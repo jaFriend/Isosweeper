@@ -119,7 +119,7 @@ func _flag_grid(pos: Vector2i):
 	grid_level.flag(grid_pos)
 
 func _flag_cell(pos: Vector2i, flag: bool):
-	var flag_pos: Array = [0, 10, 16, 22]
+	var flag_pos: Array = [0, PI/2, PI, (3*PI)/2]
 	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
 
 	if flag:
@@ -131,6 +131,8 @@ func _flag_cell(pos: Vector2i, flag: bool):
  
 		var mesh_instance := MeshInstance3D.new()
 		mesh_instance.mesh = flags_grid_map.mesh_library.get_item_mesh(self.flag_revealed)
+		var idx: int = grid_level.rng.randi_range(0, 3)
+		mesh_instance.rotate_y(flag_pos[idx])
 		var local_pos := flags_grid_map.map_to_local(grid_map_pos)
 		add_child(mesh_instance)
 		mesh_instance.global_position = flags_grid_map.to_global(local_pos)
