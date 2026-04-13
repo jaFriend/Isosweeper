@@ -131,18 +131,15 @@ func _physics_process(delta: float) -> void:
 
 func _get_tile_in_front() -> Vector2i:
 	var space_state := get_world_3d().direct_space_state
+	
+	var look_distance := 3.0
+	var forward := skin.global_transform.basis.z.normalized()
+	var ray_start := global_position + Vector3(0, 1.0, 0)
+	var ray_end := ray_start + (forward * look_distance) + Vector3(0, -4.0, 0)
 	var query := PhysicsRayQueryParameters3D.create(
-		global_position + Vector3(0, 1.0, 0),
-		global_position + Vector3(0, -3.0, 0)
+		ray_start,
+		ray_end
 	)
-
-	#TODO(Joseph) Fix forward logic, too broken at moment
-	#var forward := skin.global_transform.basis.z.normalized()
-	#var grid_dir := Vector2i(0, 0)
-	#if abs(forward.x) > abs(forward.z):
-		#grid_dir = Vector2i(1, 0) if forward.x > 0 else Vector2i(-1, 0)
-	#else:
-		#grid_dir = Vector2i(0, 1) if forward.z > 0 else Vector2i(0, -1)
 
 
 	query.collision_mask = 2
