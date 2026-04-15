@@ -16,7 +16,7 @@ var selected_coord: Vector2i
 ## Can we hold to run?
 @export var can_sprint : bool = false
 ## Can we press to enter freefly mode (noclip)?
-@export var can_freefly : bool = false
+@export var can_freefly : bool = true
 
 @export_group("Speeds")
 ## Look around rotation speed.
@@ -111,7 +111,7 @@ func _physics_process(delta: float) -> void:
 		move_speed = base_speed
 
 	# Apply desired movement to velocity
-	if can_move and GameEvents.mouse_captured:
+	if can_move:# and GameEvents.mouse_captured:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if move_dir:

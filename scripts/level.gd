@@ -8,7 +8,8 @@ extends Node
 @onready var level_ui = $LevelUI
 @onready var victory_label: Node = $Victory
 @onready var defeat_label: Node = $Defeat
-@export var character_scene_3d: PackedScene = preload("res://scenes/character_body_3d.tscn")
+@onready var character_scene_3d: PackedScene = preload("res://scenes/character_body_3d.tscn")
+@onready var character_scene_2d: PackedScene = preload("res://scenes/proto_controller.tscn")
 
 var pause_menu_state: bool = false:
 	set(value):
@@ -34,6 +35,8 @@ var flag_hidden: int = -1
 var flag_revealed: int
 var flag_nodes: Dictionary = {}
 
+var character: Node3D
+
 func load_level() -> void:
 	var level_info: LevelInfo = LevelManager.get_level()
 	self.width = level_info.x
@@ -49,10 +52,9 @@ func _ready() -> void:
 	grid_level = Grid.new(width, height, mines, pre_generate)
 	_generate_3d_grid()
 	
-	var character = character_scene_3d.instantiate()
+	character = PlayerManager.create_character()
 	add_child(character)
 	character.global_position = Vector3(width, 1, height)
-	character.scale = Vector3(0.5,0.5,0.5)
 
 	GameEvents.player_send_mine_signal.connect(_mine_grid)
 	GameEvents.player_send_flag_signal.connect(_flag_grid)
@@ -61,6 +63,7 @@ func _ready() -> void:
 	self.grid_level.game_over.connect(_on_defeat)
 	self.level_pause_menu.resume_pressed.connect(_resume_game)
 	self.level_pause_menu.exit_pressed.connect(_exit_game)
+	self.level_pause_menu.restart_pressed.connect(_restart_game)
 	
 	self.tile_hidden = 0
 	self.tile_revealed = 1
@@ -171,6 +174,9 @@ func _exit_game() -> void:
 
 func _resume_game() -> void:
 	self.pause_menu_state = false
+
+func _restart_game() -> void:
+	SceneManager.transition_deferred(SceneManager.SCENES.LEVEL)
 
 func _update_pause_menu_state() -> void:
 	if self.pause_menu_state:
