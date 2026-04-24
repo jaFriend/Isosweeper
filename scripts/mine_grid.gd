@@ -1,5 +1,4 @@
 class_name Grid
-
 var width: int
 var height: int
 var mines_count: int
@@ -9,7 +8,7 @@ var late_generation: bool
 
 signal reveal_cell(pos: Vector2i)
 signal flag_cell(pos: Vector2i, flag: bool)
-signal game_over
+signal game_over(pos: Vector2i)
 
 const ADJACENT_INDEXES: Array[Vector2i] = [
 	Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1),
@@ -31,14 +30,12 @@ func _init(init_width: int, init_height: int, init_mines_count: int, pre_generat
 	if pre_generate:
 		self.late_generation = false
 		_generate_mines()
-	#_debug_print_grid()
 
 func _generate_grid() -> void:
 	for outer_array in range(self.width):
 		var column: Array[Cell] = []
 		for inner_array in range(self.height):
 			column.append(Cell.new())
-
 		grid.append(column)
 
 func _cell_in_bounds(pos: Vector2i) -> bool:
@@ -61,7 +58,6 @@ func _generate_mines() -> void:
 		if cell.is_mine() or cell.is_revealed:
 			continue
 		cell.set_as_mine()
-
 		for adjacent_index in ADJACENT_INDEXES:
 			var adj_cell: Cell = _get_cell_in_bounds(index + adjacent_index)
 			if adj_cell and !adj_cell.is_mine():
@@ -91,13 +87,11 @@ func mine(pos: Vector2i, tree: SceneTree) -> void:
 	if not first_cell or first_cell.flagged() or first_cell.mined():
 		return
 	if first_cell.is_mine():
-		game_over.emit()
+		game_over.emit(pos)
 		return
-
 	var visited = {}
 	var current_layer: Array[Vector2i] = [pos]
 	visited[pos] = true
-
 	while !current_layer.is_empty():
 		if not is_instance_valid(tree):
 			return
@@ -121,6 +115,5 @@ func mine(pos: Vector2i, tree: SceneTree) -> void:
 						next_layer.push_back(adj_pos)
 						visited[adj_pos] = true
 		current_layer = next_layer
-
 		if !current_layer.is_empty():
 			await tree.create_timer(0.1).timeout

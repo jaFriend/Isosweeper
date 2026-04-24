@@ -38,6 +38,7 @@ var just_jumped := false
 func _ready() -> void:
 	call_deferred("_capture_mouse")
 	GameEvents.is_mouse_captured.connect(_on_mouse_capture_changed)
+	GameEvents.game_over.connect(_on_game_over)
 	footstep_sounds = [
 		load("res://assets/audio/Footstep Snow 01.mp3"),
 		load("res://assets/audio/Footstep Snow 02.mp3"),
@@ -48,7 +49,9 @@ func _ready() -> void:
 		load("res://assets/audio/Footstep Snow 07.mp3"),
 	]
 
-
+func _on_game_over() -> void:
+	skin.play_action_animation("FG_Emote_WaveOverHead_A", 2.0)
+	
 func _capture_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
