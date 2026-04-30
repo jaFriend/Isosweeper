@@ -8,6 +8,8 @@ extends Node
 @onready var level_ui = $LevelUI
 @onready var victory_label: Node = $Victory
 @onready var defeat_label: Node = $Defeat
+@onready var fade_rect: ColorRect = $ScreenOverlay/FadeRect
+@onready var game_over_label: Label = $ScreenOverlay/GameOverLabel
 
 var pause_menu_state: bool = false:
 	set(value):
@@ -183,17 +185,25 @@ func _on_defeat(pos: Vector2i) -> void:
 
 	await get_tree().create_timer(0.5).timeout
 
-	var tween := create_tween()
-	tween.tween_property(mine_instance, "position:y", world_pos.y - 1, 1.5) \
+	var rise_tween := create_tween()
+	rise_tween.tween_property(mine_instance, "position:y", world_pos.y - 1, 1.5) \
 		.set_trans(Tween.TRANS_BACK) \
 		.set_ease(Tween.EASE_OUT)
 
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(1.5).timeout
+
+	var fade_tween := create_tween()
+	fade_tween.tween_property(fade_rect, "color:a", 1.0, 1.0)
+	await fade_tween.finished
+
+	var label_tween := create_tween()
+	label_tween.tween_property(game_over_label, "modulate:a", 1.0, 0.8)
+	await label_tween.finished
+
+	await get_tree().create_timer(1.5).timeout
 
 	LevelManager.lose()
 	GameEvents.is_mouse_captured.emit(false)
-	defeat_label.visible = true
-	await get_tree().create_timer(2.0).timeout
 	_exit_game()
 
 func _exit_game() -> void:
