@@ -6,10 +6,9 @@ extends Node
 @onready var tiles_collision: CollisionShape3D = $TilesBody/TilesCollision
 @onready var level_pause_menu = $LevelPauseMenu
 @onready var level_ui = $LevelUI
-@onready var victory_label: Node = $Victory
-@onready var defeat_label: Node = $Defeat
 @onready var fade_rect: ColorRect = $ScreenOverlay/FadeRect
 @onready var game_over_label: Label = $ScreenOverlay/GameOverLabel
+@onready var victory_label: Label = $ScreenOverlay/VictoryLabel
 
 var pause_menu_state: bool = false:
 	set(value):
@@ -167,8 +166,19 @@ func _process(delta: float) -> void:
 func _on_win(time: int) -> void:
 	LevelManager.win(time)
 	GameEvents.is_mouse_captured.emit(false)
-	victory_label.visible = true
-	await get_tree().create_timer(2.0).timeout
+
+	await get_tree().create_timer(2).timeout
+
+	var fade_tween := create_tween()
+	fade_tween.tween_property(fade_rect, "color:a", 1.0, 0.6)
+	await fade_tween.finished
+
+	var label_tween := create_tween()
+	label_tween.tween_property(victory_label, "modulate:a", 1.0, 0.4)
+	await label_tween.finished
+
+	await get_tree().create_timer(2).timeout
+
 	_exit_game()
 
 func _on_defeat(pos: Vector2i) -> void:
