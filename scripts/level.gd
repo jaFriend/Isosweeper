@@ -45,6 +45,7 @@ func load_level() -> void:
 
 func _ready() -> void:
 	AudioManager.pause_audio_bus(AudioManager.MUSIC)
+	GameEvents.mouse_captured_state(true)
 
 	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
@@ -121,9 +122,9 @@ func _flag_cell(pos: Vector2i, flag: bool):
 		self.mines_left -= 1
 		if self.mines_left >= 0:
 			level_ui.mines_left_value(self.mines_left)
-
-		await get_tree().create_timer(0.8).timeout
-
+ 
+		await get_tree().create_timer(0.2).timeout
+ 
 		var mesh_instance := MeshInstance3D.new()
 		mesh_instance.mesh = flags_grid_map.mesh_library.get_item_mesh(self.flag_revealed)
 		var local_pos := flags_grid_map.map_to_local(grid_map_pos)
@@ -138,6 +139,7 @@ func _flag_cell(pos: Vector2i, flag: bool):
 			.set_ease(Tween.EASE_OUT)
 
 	else:
+		await get_tree().create_timer(0.2).timeout
 		if pos in flag_nodes:
 			flag_nodes[pos].queue_free()
 			flag_nodes.erase(pos)
@@ -165,7 +167,8 @@ func _process(delta: float) -> void:
 
 func _on_win(time: int) -> void:
 	LevelManager.win(time)
-	GameEvents.is_mouse_captured.emit(false)
+
+	GameEvents.mouse_captured_state(false)
 
 	await get_tree().create_timer(2).timeout
 
@@ -213,7 +216,7 @@ func _on_defeat(pos: Vector2i) -> void:
 	await get_tree().create_timer(1.5).timeout
 
 	LevelManager.lose()
-	GameEvents.is_mouse_captured.emit(false)
+	GameEvents.mouse_captured_state(false)
 	_exit_game()
 
 func _exit_game() -> void:
@@ -228,9 +231,9 @@ func _resume_game() -> void:
 func _update_pause_menu_state() -> void:
 	if self.pause_menu_state:
 		AudioManager.play_audio_bus(AudioManager.MUSIC)
-		GameEvents.is_mouse_captured.emit(false)
+		GameEvents.mouse_captured_state(false)
 		self.level_pause_menu.visible = true
 	else:
 		AudioManager.pause_audio_bus(AudioManager.MUSIC)
-		GameEvents.is_mouse_captured.emit(true)
+		GameEvents.mouse_captured_state(true)
 		self.level_pause_menu.visible = false

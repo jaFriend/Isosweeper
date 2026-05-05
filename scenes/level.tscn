@@ -8,7 +8,7 @@
 [ext_resource type="MeshLibrary" uid="uid://cp437pmff8gfa" path="res://assets/flags.tres" id="6_2r41h"]
 [ext_resource type="Script" uid="uid://dbcfkqtxw66lr" path="res://scripts/tiles_grid_map.gd" id="7_b121j"]
 [ext_resource type="MeshLibrary" uid="uid://c3cfk88a46gvc" path="res://assets/mines.tres" id="9_8c41q"]
-[ext_resource type="PackedScene" uid="uid://dw3b5751n55na" path="res://character_body_3d.tscn" id="9_olg7q"]
+[ext_resource type="PackedScene" uid="uid://dw3b5751n55na" path="res://scenes/character_body_3d.tscn" id="9_olg7q"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c40o3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -118,7 +118,8 @@ shape = SubResource("BoxShape3D_2r41h")
 debug_color = Color(1.7327071e-05, 0.8094265, 0.9439877, 0.41960785)
 
 [node name="CharacterBody3D" parent="." unique_id=226237724 instance=ExtResource("9_olg7q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.68383884, 0)
+<<<<<<< HEAD
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.68383884, 0)
 mouse_sensitivity = null
 tilt_upper_limit = null
 tilt_lower_limit = null

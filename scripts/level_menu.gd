@@ -3,15 +3,16 @@ extends Control
 var cards: Array
 @export var card_scene: PackedScene = preload("res://scenes/level_card.tscn")
 @onready var container: VBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer
+@onready var scroll_container: ScrollContainer = $PanelContainer/MarginContainer/ScrollContainer
 
 func _ready() -> void:
 	AudioManager.play_audio_bus(AudioManager.MUSIC)
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	GameEvents.mouse_captured_state(false)
 	if LevelManager.levels.size() == 0:
 		return
 	
 	var status: bool = true
-	status = render_levels()
+	status = await render_levels()
 	
 	if not status:
 		return
@@ -30,9 +31,15 @@ func render_levels() -> bool:
 		if i < LevelManager.completed_levels:
 			card.set_time(LevelManager.levels_time[i])
 		card.selected.connect(LevelManager.load_level)
-
+		card.selected.connect(_set_scroll_pos)
+	await get_tree().process_frame
+	scroll_container.scroll_vertical = LevelManager.menu_scroll_pos
 	return true
 
 
 func _on_back_button_pressed() -> void:
+	_set_scroll_pos(0)
 	SceneManager.transition(SceneManager.SCENES.MAIN_MENU)
+
+func _set_scroll_pos(_idx: int):
+	LevelManager.save_scroll_pos(scroll_container.scroll_vertical)
