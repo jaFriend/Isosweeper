@@ -16,7 +16,7 @@ var selected_coord: Vector2i
 ## Can we hold to run?
 @export var can_sprint : bool = false
 ## Can we press to enter freefly mode (noclip)?
-@export var can_freefly : bool = false
+@export var can_freefly : bool = true
 
 @export_group("Speeds")
 ## Look around rotation speed.
@@ -49,7 +49,6 @@ var selected_coord: Vector2i
 @export var input_click : String = "input_selection"
 @export var input_second_click : String = "input_second_selection"
 
-var mouse_captured : bool = false
 var look_rotation : Vector2
 var move_speed : float = 0.0
 var freeflying : bool = false
@@ -62,8 +61,7 @@ func _ready() -> void:
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
-	GameEvents.is_mouse_captured.connect(_mouse_captured_state)
-	_mouse_captured_state(true)
+	GameEvents.mouse_captured_state(true)
 
 	selected_coord = Vector2i(-1,-1)
 
@@ -77,7 +75,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	"""
 	
 	# Look around
-	if mouse_captured and event is InputEventMouseMotion:
+	if GameEvents.mouse_captured and event is InputEventMouseMotion:
 		rotate_look(event.relative)
 	
 	# Toggle freefly mode
@@ -113,7 +111,7 @@ func _physics_process(delta: float) -> void:
 		move_speed = base_speed
 
 	# Apply desired movement to velocity
-	if can_move and mouse_captured:
+	if can_move:# and GameEvents.mouse_captured:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if move_dir:
@@ -132,7 +130,7 @@ func _physics_process(delta: float) -> void:
 	if ray.is_colliding():
 		var ray_collider = ray.get_collider()
 
-		if ray_collider and mouse_captured:
+		if ray_collider and GameEvents.mouse_captured:
 			var grid_map = get_node("../TilesGridMap")
 
 			var coords3: Vector3 = grid_map.local_to_map(ray.get_collision_point() - (ray.get_collision_normal() * 0.1))
@@ -169,13 +167,13 @@ func disable_freefly():
 	collider.disabled = false
 	freeflying = false
 
-func _mouse_captured_state(captured: bool) -> void:
+func __mouse_captured_state(captured: bool) -> void:
 	if captured:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		mouse_captured = true
+		GameEvents.mouse_captured = true
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		mouse_captured = false
+		GameEvents.mouse_captured = false
 		velocity.x = 0
 		velocity.y = 0
 		velocity.z = 0

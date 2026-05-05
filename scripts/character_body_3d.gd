@@ -2,21 +2,21 @@ extends CharacterBody3D
 
 @export_group("Camera")
 @export_range(0.0, 1.0) var mouse_sensitivity := 0.2
-@export var tilt_upper_limit := PI / 8.0
-@export var tilt_lower_limit := -PI / 3.0
+@export var tilt_upper_limit := PI / 4.0
+@export var tilt_lower_limit := PI / 4.0
 
 @export_group("Zoom")
-@export var zoom_speed := 0.6
-@export var min_arm_length := 2.0
-@export var max_arm_length := 12.0
+@export var zoom_speed := 0.4
+@export var min_arm_length := 3.0
+@export var max_arm_length := 5.0
 
 @export_group("Movement")
-@export var walk_speed := 3.0
-@export var sprint_speed := 7.0
+@export var walk_speed := 1.0
+@export var sprint_speed := 4.0
 @export var acceleration := 20.0
 
 @export_group("Jump")
-@export var jump_force := 10.0
+@export var jump_force := 5.0
 
 @export_group("SFX")
 @export var sfx_reveal: AudioStream
@@ -37,8 +37,8 @@ var just_jumped := false
 
 func _ready() -> void:
 	call_deferred("_capture_mouse")
-	GameEvents.is_mouse_captured.connect(_on_mouse_capture_changed)
 	GameEvents.game_over.connect(_on_game_over)
+	spring_arm.spring_length = self.max_arm_length
 	footstep_sounds = [
 		load("res://assets/audio/Footstep Snow 01.mp3"),
 		load("res://assets/audio/Footstep Snow 02.mp3"),
@@ -55,21 +55,7 @@ func _on_game_over() -> void:
 func _capture_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-
-func _on_mouse_capture_changed(captured: bool) -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if captured else Input.MOUSE_MODE_VISIBLE
-
-
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		return
-
-	if event is InputEventMouseButton and event.pressed:
-		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			return
-
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			spring_arm.spring_length = clamp(spring_arm.spring_length - zoom_speed, min_arm_length, max_arm_length)
@@ -133,15 +119,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		footstep_timer = 0.0
 
+#TODO(Joseph): Increase animation speed. Too slow.
+
 	var grid_pos := _get_tile_in_front()
-	if Input.is_action_just_pressed("input_selection") and grid_pos != Vector2i(-1, -1):
+	if Input.is_action_just_pressed("input_selection") and grid_pos != Vector2i(-1, -1) and GameEvents.mouse_captured:
 		skin.play_action_animation(skin.anim_show, 2.0)
 		if sfx_reveal:
 			sfx_player.stream = sfx_reveal
 			sfx_player.play()
 		GameEvents.player_send_mine_signal.emit(grid_pos)
 
-	if Input.is_action_just_pressed("input_second_selection") and grid_pos != Vector2i(-1, -1):
+	if Input.is_action_just_pressed("input_second_selection") and grid_pos != Vector2i(-1, -1) and GameEvents.mouse_captured:
 		skin.play_action_animation(skin.anim_flag, 2.0)
 		if sfx_flag:
 			sfx_player.stream = sfx_flag
@@ -151,26 +139,27 @@ func _physics_process(delta: float) -> void:
 
 func _get_tile_in_front() -> Vector2i:
 	var space_state := get_world_3d().direct_space_state
+	
+	var look_distance := 3.0
+	var forward := skin.global_transform.basis.z.normalized()
+	var ray_start := global_position + Vector3(0, 1.0, 0)
+	var ray_end := ray_start + (forward * look_distance) + Vector3(0, -4.0, 0)
 	var query := PhysicsRayQueryParameters3D.create(
-		global_position + Vector3(0, 1.0, 0),
-		global_position + Vector3(0, -2.0, 0)
+		ray_start,
+		ray_end
 	)
+
+
 	query.collision_mask = 2
 	query.exclude = [self]
 	var result := space_state.intersect_ray(query)
 	if not result:
 		return Vector2i(-1, -1)
 
-	var forward := skin.global_transform.basis.z.normalized()
-	var grid_dir := Vector2i(0, 0)
-	if abs(forward.x) > abs(forward.z):
-		grid_dir = Vector2i(1, 0) if forward.x > 0 else Vector2i(-1, 0)
-	else:
-		grid_dir = Vector2i(0, 1) if forward.z > 0 else Vector2i(0, -1)
 
 	var tiles_grid_map := get_node("../TilesGridMap")
 	var map_pos: Vector3i = tiles_grid_map.local_to_map(tiles_grid_map.to_local(result.position))
-	var target := Vector3i(map_pos.x + grid_dir.x, 0, map_pos.z + grid_dir.y)
+	var target := Vector3i(map_pos.x, 0, map_pos.z)
 
 	tiles_grid_map.update_selection(target)
 	return Vector2i(target.x, target.z)

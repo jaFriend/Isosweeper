@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dw3b5751n55na"]
 
-[ext_resource type="Script" uid="uid://dvvbtyrwp3lb3" path="res://character_body_3d.gd" id="1_fb3t6"]
-[ext_resource type="PackedScene" uid="uid://b1gvwr3agtq53" path="res://FallguysCharacter.glb" id="1_iwpo4"]
-[ext_resource type="Script" uid="uid://edxh7n2r5tu8" path="res://fallguys_character.gd" id="3_vd578"]
+[ext_resource type="Script" uid="uid://dvvbtyrwp3lb3" path="res://scripts/character_body_3d.gd" id="1_fb3t6"]
+[ext_resource type="PackedScene" uid="uid://b1gvwr3agtq53" path="res://assets/FallguysCharacter.glb" id="1_iwpo4"]
+[ext_resource type="Script" uid="uid://edxh7n2r5tu8" path="res://scripts/fallguys_character.gd" id="3_vd578"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fb3t6"]
 radius = 0.49560547
@@ -25,7 +25,7 @@ shape = SubResource("CapsuleShape3D_fb3t6")
 transform = Transform3D(0.9993283, -0.036643703, 0, 0.036643703, 0.9993283, 0, 0, 0, 1.0000001, 0, 1.5, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1082497028]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0, 0)
 shape = SubResource("SphereShape3D_fb3t6")
 spring_length = 8.0
 

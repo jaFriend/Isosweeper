@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://b1gvwr3agtq53"
-path="res://.godot/imported/FallguysCharacter.glb-fbc3c167ccc0f432061e14b5649b0058.scn"
+path="res://.godot/imported/FallguysCharacter.glb-4d6fcf97af310d2c9d09b87fdf7be656.scn"
 
 [deps]
 
-source_file="res://FallguysCharacter.glb"
-dest_files=["res://.godot/imported/FallguysCharacter.glb-fbc3c167ccc0f432061e14b5649b0058.scn"]
+source_file="res://assets/FallguysCharacter.glb"
+dest_files=["res://.godot/imported/FallguysCharacter.glb-4d6fcf97af310d2c9d09b87fdf7be656.scn"]
 
 [params]
 

@@ -3,6 +3,7 @@ extends Node
 var levels: Array[LevelInfo]
 var levels_time: Array[int]
 var idx: int
+var menu_scroll_pos: int
 var completed_levels: int
 var completed_level_time: int
 var level_completed: bool = 0
@@ -62,3 +63,6 @@ func load_custom_level(level_info: LevelInfo) -> void:
 	self.custom_level_info = level_info
 	self.idx = self.CUSTOM_LEVEL
 	SceneManager.transition(SceneManager.SCENES.LEVEL)
+
+func save_scroll_pos(value: int):
+	self.menu_scroll_pos = value

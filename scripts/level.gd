@@ -35,6 +35,7 @@ var flag_revealed: int
 var flag_nodes: Dictionary = {}
 
 var mine_scene := preload("res://assets/mine/sea_mine.glb")
+var character: Node3D
 
 func load_level() -> void:
 	var level_info: LevelInfo = LevelManager.get_level()
@@ -45,11 +46,15 @@ func load_level() -> void:
 
 func _ready() -> void:
 	AudioManager.pause_audio_bus(AudioManager.MUSIC)
+	GameEvents.mouse_captured_state(true)
 
 	load_level()
 	grid_level = Grid.new(width, height, mines, pre_generate)
 	_generate_3d_grid()
-	$CharacterBody3D.position = Vector3(self.width, 1, self.height)
+	
+	character = PlayerManager.create_character()
+	add_child(character)
+	character.global_position = Vector3(width, 1, height)
 
 	GameEvents.player_send_mine_signal.connect(_mine_grid)
 	GameEvents.player_send_flag_signal.connect(_flag_grid)
@@ -58,7 +63,8 @@ func _ready() -> void:
 	self.grid_level.game_over.connect(_on_defeat)
 	self.level_pause_menu.resume_pressed.connect(_resume_game)
 	self.level_pause_menu.exit_pressed.connect(_exit_game)
-
+	self.level_pause_menu.restart_pressed.connect(_restart_game)
+	
 	self.tile_hidden = 0
 	self.tile_revealed = 1
 	self.flag_revealed = 0
@@ -114,18 +120,20 @@ func _flag_grid(pos: Vector2i):
 	grid_level.flag(grid_pos)
 
 func _flag_cell(pos: Vector2i, flag: bool):
-	var flag_pos: Array = [0, 10, 16, 22]
+	var flag_pos: Array = [0, PI/2, PI, (3*PI)/2]
 	var grid_map_pos: Vector3i = Vector3i(pos.x, 0, pos.y)
 
 	if flag:
 		self.mines_left -= 1
 		if self.mines_left >= 0:
 			level_ui.mines_left_value(self.mines_left)
-
-		await get_tree().create_timer(0.8).timeout
-
+ 
+		await get_tree().create_timer(0.2).timeout
+ 
 		var mesh_instance := MeshInstance3D.new()
 		mesh_instance.mesh = flags_grid_map.mesh_library.get_item_mesh(self.flag_revealed)
+		var idx: int = grid_level.rng.randi_range(0, 3)
+		mesh_instance.rotate_y(flag_pos[idx])
 		var local_pos := flags_grid_map.map_to_local(grid_map_pos)
 		add_child(mesh_instance)
 		mesh_instance.global_position = flags_grid_map.to_global(local_pos)
@@ -138,6 +146,7 @@ func _flag_cell(pos: Vector2i, flag: bool):
 			.set_ease(Tween.EASE_OUT)
 
 	else:
+		await get_tree().create_timer(0.2).timeout
 		if pos in flag_nodes:
 			flag_nodes[pos].queue_free()
 			flag_nodes.erase(pos)
@@ -165,9 +174,7 @@ func _process(delta: float) -> void:
 
 func _on_win(time: int) -> void:
 	LevelManager.win(time)
-	GameEvents.is_mouse_captured.emit(false)
-
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(0.25).timeout
 
 	var fade_tween := create_tween()
 	fade_tween.tween_property(fade_rect, "color:a", 1.0, 0.6)
@@ -213,7 +220,7 @@ func _on_defeat(pos: Vector2i) -> void:
 	await get_tree().create_timer(1.5).timeout
 
 	LevelManager.lose()
-	GameEvents.is_mouse_captured.emit(false)
+	GameEvents.mouse_captured_state(false)
 	_exit_game()
 
 func _exit_game() -> void:
@@ -225,12 +232,15 @@ func _exit_game() -> void:
 func _resume_game() -> void:
 	self.pause_menu_state = false
 
+func _restart_game() -> void:
+	SceneManager.transition_deferred(SceneManager.SCENES.LEVEL)
+
 func _update_pause_menu_state() -> void:
 	if self.pause_menu_state:
 		AudioManager.play_audio_bus(AudioManager.MUSIC)
-		GameEvents.is_mouse_captured.emit(false)
+		GameEvents.mouse_captured_state(false)
 		self.level_pause_menu.visible = true
 	else:
 		AudioManager.pause_audio_bus(AudioManager.MUSIC)
-		GameEvents.is_mouse_captured.emit(true)
+		GameEvents.mouse_captured_state(true)
 		self.level_pause_menu.visible = false

@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://bs72ogkvdd7d6"]
 
-[ext_resource type="Script" uid="uid://c00fklj35vnhc" path="res://addons/proto_controller/proto_controller.gd" id="1_ucva2"]
+[ext_resource type="Script" uid="uid://c00fklj35vnhc" path="res://scripts/proto_controller.gd" id="1_qhypi"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iof21"]
 radius = 0.20703125
 height = 1.8
 
 [node name="ProtoController" type="CharacterBody3D" unique_id=154970991]
-script = ExtResource("1_ucva2")
+script = ExtResource("1_qhypi")
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1115302152]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -18,7 +18,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=1538881899]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.055, 0)
-far = 75.0
+far = 200.0
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D" unique_id=1089254072]
 target_position = Vector3(0, 0, -5)
