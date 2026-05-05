@@ -2,6 +2,7 @@ extends Node
  
 signal player_send_mine_signal(vec: Vector2i)
 signal player_send_flag_signal(vec: Vector2i)
+signal game_over
 var mouse_captured: bool = false
 
 func mouse_captured_state(captured: bool) -> void:

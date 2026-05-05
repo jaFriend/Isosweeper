@@ -174,10 +174,7 @@ func _process(delta: float) -> void:
 
 func _on_win(time: int) -> void:
 	LevelManager.win(time)
-
-	GameEvents.mouse_captured_state(false)
-
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(0.25).timeout
 
 	var fade_tween := create_tween()
 	fade_tween.tween_property(fade_rect, "color:a", 1.0, 0.6)

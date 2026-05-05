@@ -194,4 +194,7 @@ func play_animation(requested_name: String) -> void:
 		return
 
 	current_animation = real_name
-	animation_player.play(real_name, blend_time)
+	if real_name == anim_flag:
+		animation_player.play(real_name, blend_time, 2.0)
+	else:
+		animation_player.play(real_name, blend_time)

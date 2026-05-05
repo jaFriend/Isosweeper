@@ -116,19 +116,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5068039, 2)
 shape = SubResource("BoxShape3D_2r41h")
 debug_color = Color(1.7327071e-05, 0.8094265, 0.9439877, 0.41960785)
 
-[node name="CharacterBody3D" parent="." unique_id=226237724 instance=ExtResource("9_olg7q")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.68383884, 0)
-mouse_sensitivity = null
-tilt_upper_limit = null
-tilt_lower_limit = null
-zoom_speed = null
-min_arm_length = null
-max_arm_length = null
-walk_speed = null
-sprint_speed = null
-acceleration = null
-jump_force = null
-
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1362765928]
 
 [node name="FadeRect" type="ColorRect" parent="ScreenOverlay" unique_id=365550559]

@@ -2,8 +2,8 @@ extends CharacterBody3D
 
 @export_group("Camera")
 @export_range(0.0, 1.0) var mouse_sensitivity := 0.2
-@export var tilt_upper_limit := PI / 3.0
-@export var tilt_lower_limit := PI / 3.0
+@export var tilt_upper_limit := PI / 4.0
+@export var tilt_lower_limit := PI / 4.0
 
 @export_group("Zoom")
 @export var zoom_speed := 0.4
@@ -37,7 +37,6 @@ var just_jumped := false
 
 func _ready() -> void:
 	call_deferred("_capture_mouse")
-	GameEvents.is_mouse_captured.connect(_on_mouse_capture_changed)
 	GameEvents.game_over.connect(_on_game_over)
 	spring_arm.spring_length = self.max_arm_length
 	footstep_sounds = [
@@ -55,10 +54,6 @@ func _on_game_over() -> void:
 	
 func _capture_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-
-func _on_mouse_capture_changed(captured: bool) -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if captured else Input.MOUSE_MODE_VISIBLE
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
